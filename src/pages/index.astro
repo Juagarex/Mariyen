@@ -11,8 +11,8 @@ import { WHATSAPP_URL, WHATSAPP_TEXTO } from '../data/sitio';
 
 import PlanesDelMes from '../components/PlanesDelMes.astro';
 
-// Foto temporal del hero (Unsplash, Usen Parmanov). La anterior sigue en hero.jpg.
-import hero from '../assets/images/hero-bienestar.jpg';
+// Foto del hero (Unsplash, Aiony Haust). Alternativas guardadas: hero-bienestar.jpg y hero.jpg.
+import hero from '../assets/images/hero-retrato.jpg';
 import cabinaVelas from '../assets/images/cabina-velas.jpg';
 import toalla from '../assets/images/toalla-turquesa.jpg';
 import masaje from '../assets/images/masaje.jpg';
@@ -56,17 +56,17 @@ const sede = [
       >
         <div class="intro-zoom absolute inset-0">
           <!--
-            En celular el hero es vertical y la foto horizontal se recorta: se pinta ~2,8 veces
-            el ancho de pantalla (de ahí el 280vw en sizes) y se centra en la persona.
+            Foto vertical (2:3). En escritorio ocupa todo el ancho y se ve una franja centrada en
+            el rostro; en celular se pinta ~1,6 veces el ancho de pantalla (160vw en sizes).
           -->
           <Image
             src={hero}
-            alt="Mujer en bata blanca descansando en un sofá con una taza en las manos"
-            class="parallax-hero absolute inset-0 h-full w-full object-cover object-[58%_center] md:object-center"
+            alt="Mujer serena apoyada en una mesa blanca, con luz suave"
+            class="parallax-hero absolute inset-0 h-full w-full object-cover object-[center_30%]"
             loading="eager"
             fetchpriority="high"
-            widths={[828, 1280, 1920, 2560]}
-            sizes="(max-width: 767px) 280vw, 100vw"
+            widths={[828, 1280, 1920, 2400]}
+            sizes="(max-width: 767px) 160vw, 100vw"
           />
         </div>
         <div
