@@ -47,11 +47,11 @@ const sede = [
   <main>
     <!-- Hero -->
     <section class="p-4">
-      <div class="relative flex min-h-[760px] flex-col overflow-hidden rounded-[32px] bg-arena">
+      <div class="relative flex min-h-[640px] md:min-h-[760px] flex-col overflow-hidden rounded-[32px] bg-arena">
         <Image
           src={hero}
           alt="Paciente relajada en la camilla durante un tratamiento"
-          class="absolute inset-0 h-full w-full object-cover object-[70%_center]"
+          class="parallax-hero absolute inset-0 h-full w-full object-cover object-[70%_center]"
           loading="eager"
           fetchpriority="high"
           widths={[640, 1024, 1440, 1920]}
@@ -59,16 +59,16 @@ const sede = [
         />
         <div
           aria-hidden="true"
-          class="absolute inset-0 bg-[linear-gradient(180deg,rgba(245,241,236,0.94)_0%,rgba(245,241,236,0.86)_60%,rgba(245,241,236,0.5)_100%)] md:bg-[linear-gradient(90deg,rgba(245,241,236,0.96)_0%,rgba(245,241,236,0.88)_38%,rgba(245,241,236,0.15)_72%,rgba(245,241,236,0)_100%)]"
+          class="absolute inset-0 bg-[linear-gradient(180deg,rgba(245,241,236,0.9)_0%,rgba(245,241,236,0.78)_55%,rgba(245,241,236,0.25)_100%)] md:bg-[linear-gradient(90deg,rgba(245,241,236,0.96)_0%,rgba(245,241,236,0.88)_38%,rgba(245,241,236,0.15)_72%,rgba(245,241,236,0)_100%)]"
         >
         </div>
         <div class="relative px-4 pt-4">
           <Header links={navLinks} class="max-w-[1180px]" />
         </div>
         <div
-          class="relative mx-auto box-border flex w-full max-w-[1180px] flex-1 flex-wrap items-end justify-between gap-8 px-6 pt-[72px] pb-10"
+          class="relative mx-auto box-border flex w-full max-w-[1180px] flex-1 flex-wrap items-end justify-between gap-8 px-6 pt-12 pb-8 md:pt-[72px] md:pb-10"
         >
-          <div class="flex max-w-[560px] flex-col gap-[22px]">
+          <div class="entrada flex max-w-[560px] flex-col gap-[22px]">
             <p class="eyebrow text-tinta-3 before:bg-tinta-3">Estética corporal y facial en Zipaquirá</p>
             <h1 class="titulo text-[clamp(48px,6vw,84px)] leading-[0.98] tracking-[-0.01em]">
               Manos expertas, <em>resultados</em> que se notan.
@@ -90,7 +90,7 @@ const sede = [
           </div>
 
           <div
-            class="box-border flex w-full max-w-[340px] flex-col gap-1 rounded-3xl bg-white p-[22px] shadow-[0_16px_40px_rgba(31,42,43,0.14)]"
+            class="entrada-3 box-border flex w-full max-w-[340px] flex-col gap-1 rounded-3xl bg-white p-[22px] shadow-[0_16px_40px_rgba(31,42,43,0.14)]"
           >
             <div class="flex items-baseline justify-between border-b border-lino pb-2.5">
               <span class="font-serif text-2xl font-semibold">Planes del mes</span>
@@ -138,7 +138,7 @@ const sede = [
     </section>
 
     <!-- Tratamientos -->
-    <section id="tratamientos" class="scroll-mt-4 px-6 pt-24 pb-[88px]">
+    <section id="tratamientos" class="scroll-mt-4 px-6 pt-16 md:pt-24 pb-16 md:pb-[88px]">
       <div class="mx-auto flex max-w-[1180px] flex-col gap-9">
         <div class="flex flex-wrap items-end justify-between gap-5">
           <h2 class="titulo text-[clamp(40px,4.6vw,60px)]">Hecho para <em>verte bien.</em></h2>
@@ -149,7 +149,7 @@ const sede = [
             <a href={urlServicio(lipo.slug)} class="text-sm font-semibold no-underline">Todos los tratamientos →</a>
           </div>
         </div>
-        <div class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4">
+        <div class="carrusel revelar grid-cols-[repeat(auto-fit,minmax(250px,1fr))]">
           {
             servicios.map((s) => (
               <a
@@ -162,6 +162,7 @@ const sede = [
                   alt={s.fotoAlt}
                   widths={[400, 600, 800]}
                   sizes="(min-width: 1180px) 290px, (min-width: 640px) 50vw, 100vw"
+                  transition:name={`foto-${s.slug}`}
                   class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <span class="relative flex items-end justify-between gap-2 rounded-2xl bg-white px-4 py-3.5">
@@ -186,16 +187,16 @@ const sede = [
     </section>
 
     <!-- Nosotros -->
-    <section id="nosotros" class="scroll-mt-4 px-6 pb-24">
+    <section id="nosotros" class="scroll-mt-4 px-6 pb-16 md:pb-24">
       <div class="mx-auto grid max-w-[1180px] grid-cols-[repeat(auto-fit,minmax(min(340px,100%),1fr))] items-start gap-12">
         <Image
           src={cabinaVelas}
           alt="Toallas enrolladas y velas encendidas en la cabina"
           widths={[600, 900, 1200]}
           sizes="(min-width: 1180px) 566px, 100vw"
-          class="block aspect-square w-full rounded-[28px] bg-[#CDBFB2] object-cover"
+          class="revelar block aspect-square w-full rounded-[28px] bg-[#CDBFB2] object-cover"
         />
-        <div class="flex flex-col gap-[22px] pt-3">
+        <div class="revelar flex flex-col gap-[22px] pt-3">
           <p class="eyebrow">Desde [año] · Zipaquirá</p>
           <h2 class="titulo text-[clamp(40px,4.6vw,60px)]">Una cabina, <em>una especialista.</em></h2>
           <p class="m-0 text-[17px] leading-[1.7] text-gris">
@@ -229,13 +230,13 @@ const sede = [
     </section>
 
     <!-- Así empiezas -->
-    <section class="bg-white px-6 py-24">
+    <section class="bg-white px-6 py-16 md:py-24">
       <div class="mx-auto flex max-w-[1180px] flex-col gap-10">
         <h2 class="titulo text-[clamp(40px,4.6vw,60px)]">Así <em>empiezas.</em></h2>
         <ol class="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-5 p-0">
           {
             pasos.map((p) => (
-              <li class="flex flex-col gap-2.5 border-t border-linea pt-[22px]">
+              <li class="revelar flex flex-col gap-2.5 border-t border-linea pt-[22px]">
                 <span class="font-serif text-[34px] text-petroleo italic">{p.n}</span>
                 <h3 class="m-0 text-lg font-bold">{p.t}</h3>
                 <p class="m-0 text-[15px] leading-relaxed text-gris">{p.d}</p>
@@ -247,7 +248,7 @@ const sede = [
     </section>
 
     <!-- Resultados -->
-    <section id="resultados" class="scroll-mt-4 px-6 py-24">
+    <section id="resultados" class="scroll-mt-4 px-6 py-16 md:py-24">
       <div class="mx-auto flex max-w-[1180px] flex-col gap-9">
         <div class="flex flex-wrap items-end justify-between gap-5">
           <h2 class="titulo text-[clamp(40px,4.6vw,60px)]">Pacientes <em>reales.</em></h2>
@@ -255,7 +256,7 @@ const sede = [
             Publicadas con autorización. Los resultados varían según cada persona.
           </p>
         </div>
-        <div class="grid grid-cols-[repeat(auto-fit,minmax(min(300px,100%),1fr))] gap-4">
+        <div class="carrusel revelar grid-cols-[repeat(auto-fit,minmax(300px,1fr))]">
           {
             resultados.map((r) => (
               <figure class="m-0 flex flex-col gap-3 rounded-3xl bg-white p-3">
@@ -279,7 +280,7 @@ const sede = [
     </section>
 
     <!-- Sede -->
-    <section id="sede" class="scroll-mt-4 bg-white px-6 py-24">
+    <section id="sede" class="scroll-mt-4 bg-white px-6 py-16 md:py-24">
       <div class="mx-auto grid max-w-[1180px] grid-cols-[repeat(auto-fit,minmax(min(320px,100%),1fr))] items-center gap-8">
         <div class="flex flex-col gap-[22px]">
           <h2 class="titulo text-[clamp(40px,4.6vw,60px)]">Te esperamos <em>en Zipaquirá.</em></h2>
@@ -306,7 +307,7 @@ const sede = [
             alt="Masaje en la cabina de Mariyen"
             widths={[600, 900, 1200]}
             sizes="(min-width: 1180px) 574px, 100vw"
-            class="absolute inset-0 h-full w-full object-cover"
+            class="parallax-suave absolute inset-0 h-full w-full object-cover"
           />
           <span class="relative rounded-full bg-white/90 px-3.5 py-2 text-[13px] text-tinta-3">
             [Reemplazar por foto de la fachada y mapa]

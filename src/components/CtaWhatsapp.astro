@@ -7,9 +7,9 @@ interface Props {
 const { texto = 'Escríbenos y te respondemos con los horarios disponibles.' } = Astro.props;
 ---
 
-<section class="px-6 py-24">
+<section class="px-6 py-16 md:py-24">
   <div
-    class="mx-auto flex max-w-[1180px] flex-col items-center gap-[18px] rounded-[32px] bg-petroleo px-8 py-[72px] text-center text-white"
+    class="revelar mx-auto flex max-w-[1180px] flex-col items-center gap-[18px] rounded-[32px] bg-petroleo px-6 py-12 md:px-8 md:py-[72px] text-center text-white"
   >
     <h2 class="titulo text-[clamp(40px,4.6vw,62px)] [&_em]:text-white">
       <slot />

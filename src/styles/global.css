@@ -70,4 +70,105 @@
     content: "";
     @apply h-px w-7 bg-gris-3;
   }
+
+  /* Carrusel deslizable en celular; en pantallas ≥640px vuelve a ser grilla
+     (las columnas se definen con grid-cols-* en el mismo elemento). */
+  .carrusel {
+    @apply -mx-6 flex snap-x snap-mandatory scroll-px-6 gap-4 overflow-x-auto px-6 pb-2 sm:mx-0 sm:grid sm:overflow-visible sm:px-0 sm:pb-0;
+    scrollbar-width: none;
+  }
+  .carrusel::-webkit-scrollbar {
+    display: none;
+  }
+  .carrusel > * {
+    @apply w-[80%] shrink-0 snap-start sm:w-auto;
+  }
+
+  /* Fila de pastillas deslizable en celular */
+  .fila-deslizable {
+    @apply -mx-6 flex gap-2 overflow-x-auto px-6 sm:mx-0 sm:flex-wrap sm:px-0;
+    scrollbar-width: none;
+  }
+  .fila-deslizable::-webkit-scrollbar {
+    display: none;
+  }
+  .fila-deslizable > * {
+    @apply shrink-0 whitespace-nowrap;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Animaciones (sin JavaScript)
+   - .entrada / .entrada-2 / .entrada-3: aparición al cargar la página
+   - .revelar: aparece al entrar en pantalla con el scroll
+   - .parallax-hero: la foto del inicio se desplaza más lento que el scroll
+   - .parallax-suave: foto dentro de un contenedor con overflow-hidden
+   Todo se desactiva con "reducir movimiento" del sistema.
+------------------------------------------------------------------- */
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes parallax-hero {
+  from {
+    transform: translateY(0) scale(1.08);
+  }
+  to {
+    transform: translateY(14%) scale(1.08);
+  }
+}
+
+@keyframes parallax-suave {
+  from {
+    transform: translateY(-7%) scale(1.16);
+  }
+  to {
+    transform: translateY(7%) scale(1.16);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .entrada,
+  .entrada-2,
+  .entrada-3 {
+    animation: subir 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .entrada-2 {
+    animation-delay: 0.12s;
+  }
+  .entrada-3 {
+    animation-delay: 0.24s;
+  }
+
+  @supports (animation-timeline: view()) {
+    .revelar {
+      animation: subir linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+
+    .parallax-hero {
+      animation: parallax-hero linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+    }
+
+    .parallax-suave {
+      animation: parallax-suave linear both;
+      animation-timeline: view();
+    }
+  }
+}
+
+/* Transición entre páginas: fundido suave en lugar del deslizamiento por defecto */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.35s;
 }

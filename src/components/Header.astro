@@ -13,7 +13,7 @@ const { links, class: clase = '' } = Astro.props;
 
 <header
   class:list={[
-    'mx-auto flex flex-wrap items-center justify-between gap-3 rounded-[28px] bg-white py-2.5 pr-2.5 pl-6 sm:rounded-full',
+    'relative mx-auto flex items-center justify-between gap-3 rounded-full bg-white py-2 pr-2 pl-5 md:py-2.5 md:pr-2.5 md:pl-6',
     clase,
   ]}
 >
@@ -21,7 +21,9 @@ const { links, class: clase = '' } = Astro.props;
     <Logo />
     <span class="font-serif text-2xl font-semibold">Mariyen</span>
   </a>
-  <nav aria-label="Principal" class="flex flex-wrap items-center gap-x-[22px] gap-y-1 text-sm font-medium">
+
+  <!-- Escritorio -->
+  <nav aria-label="Principal" class="hidden flex-wrap items-center gap-x-[22px] gap-y-1 text-sm font-medium md:flex">
     {
       links.map((l) => (
         <a
@@ -39,4 +41,56 @@ const { links, class: clase = '' } = Astro.props;
       Agendar valoración <Flecha />
     </a>
   </nav>
+
+  <!-- Celular -->
+  <div class="flex items-center gap-1.5 md:hidden">
+    <a
+      href={WHATSAPP_URL}
+      class="inline-flex min-h-11 items-center rounded-full bg-petroleo px-4 text-sm font-semibold text-white no-underline hover:text-white"
+    >
+      Agendar
+    </a>
+    <details class="menu-movil group">
+      <summary
+        aria-label="Menú"
+        class="flex size-11 cursor-pointer list-none items-center justify-center rounded-full bg-crema text-tinta [&::-webkit-details-marker]:hidden"
+      >
+        <svg class="group-open:hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16"></path>
+        </svg>
+        <svg class="hidden group-open:block" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6 6 18"></path>
+        </svg>
+      </summary>
+      <nav
+        aria-label="Principal"
+        class="absolute top-full right-0 left-0 z-20 mt-2 flex flex-col rounded-3xl bg-white p-2 shadow-[0_16px_40px_rgba(31,42,43,0.16)]"
+      >
+        {
+          links.map((l) => (
+            <a
+              href={l.href}
+              class:list={[
+                'flex min-h-12 items-center rounded-2xl px-4 text-base no-underline hover:bg-crema',
+                l.activo ? 'font-bold text-petroleo' : 'font-medium text-tinta',
+              ]}
+            >
+              {l.label}
+            </a>
+          ))
+        }
+      </nav>
+    </details>
+  </div>
 </header>
+
+<script>
+  // Cierra el menú del celular al elegir un enlace o tocar fuera de él.
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    document.querySelectorAll<HTMLDetailsElement>('details.menu-movil[open]').forEach((menu) => {
+      const enlace = target.closest('a');
+      if (!menu.contains(target) || (enlace && menu.contains(enlace))) menu.open = false;
+    });
+  });
+</script>

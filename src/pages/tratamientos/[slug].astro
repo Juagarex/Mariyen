@@ -45,7 +45,7 @@ const navLinks = [
         <span aria-hidden="true">/</span>
         <span class="font-semibold text-tinta" aria-current="page">{s.nombre}</span>
       </nav>
-      <nav aria-label="Cambiar de tratamiento" class="flex flex-wrap gap-2">
+      <nav aria-label="Cambiar de tratamiento" class="fila-deslizable">
         {
           servicios.map((t) => {
             const activo = t.slug === s.slug;
@@ -70,9 +70,9 @@ const navLinks = [
 
     <!-- Hero del servicio -->
     <section
-      class="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(340px,100%),1fr))] items-center gap-12 px-6 pt-9 pb-[72px]"
+      class="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(340px,100%),1fr))] items-center gap-12 px-6 pt-6 pb-16 md:pt-9 md:pb-[72px]"
     >
-      <div class="flex flex-col gap-[22px]">
+      <div class="entrada flex flex-col gap-[22px]">
         <p class="eyebrow">{s.zona}</p>
         <h1 class="titulo text-[clamp(44px,5.4vw,72px)] tracking-[-0.01em]">
           {s.t1} <em>{s.tItal}</em>
@@ -105,11 +105,12 @@ const navLinks = [
           sizes="(min-width: 1200px) 552px, 100vw"
           loading="eager"
           fetchpriority="high"
+          transition:name={`foto-${s.slug}`}
           class="block aspect-[5/6] w-full rounded-[28px] object-cover"
           style={{ background: s.tono }}
         />
         <div
-          class="absolute top-7 right-3 box-border flex w-[250px] flex-col gap-2.5 rounded-[22px] bg-white px-6 py-[22px] shadow-[0_12px_32px_rgba(31,42,43,0.12)] lg:-right-3"
+          class="entrada-3 absolute top-7 right-3 box-border flex w-[250px] flex-col gap-2.5 rounded-[22px] bg-white px-6 py-[22px] shadow-[0_12px_32px_rgba(31,42,43,0.12)] lg:-right-3"
         >
           <span class="text-[13px] text-gris-2">Plan completo · {s.sesiones}</span>
           <span class="font-serif text-[44px] leading-none font-semibold text-tinta">{s.precio}</span>
@@ -129,7 +130,7 @@ const navLinks = [
     </section>
 
     <!-- Beneficios -->
-    <section class="bg-white px-6 py-[88px]">
+    <section class="bg-white px-6 py-16 md:py-[88px]">
       <div class="mx-auto flex max-w-[1200px] flex-col gap-10">
         <div class="flex flex-wrap items-end justify-between gap-4">
           <h2 class="titulo text-[clamp(36px,4vw,52px)] leading-[1.05]">Por qué <em>elegirlo</em></h2>
@@ -140,7 +141,7 @@ const navLinks = [
         <div class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">
           {
             s.beneficios.map((b) => (
-              <article class="flex flex-col gap-3 rounded-[22px] bg-crema p-[26px]">
+              <article class="revelar flex flex-col gap-3 rounded-[22px] bg-crema p-[26px]">
                 <span class="flex size-10 items-center justify-center rounded-full bg-white">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F4A4C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="M20 6 9 17l-5-5" />
@@ -156,13 +157,13 @@ const navLinks = [
     </section>
 
     <!-- Pasos -->
-    <section id="pasos" class="scroll-mt-4 px-6 py-[88px]">
+    <section id="pasos" class="scroll-mt-4 px-6 py-16 md:py-[88px]">
       <div class="mx-auto flex max-w-[1200px] flex-col gap-11">
         <h2 class="titulo text-[clamp(36px,4vw,52px)] leading-[1.05]">Tu proceso, <em>paso a paso</em></h2>
         <ol class="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-5 p-0">
           {
             s.pasos.map((p) => (
-              <li class="flex flex-col gap-2.5 border-t border-linea pt-[22px]">
+              <li class="revelar flex flex-col gap-2.5 border-t border-linea pt-[22px]">
                 <span class="font-serif text-[34px] text-petroleo italic">{p.n}</span>
                 <h3 class="m-0 text-lg font-bold">{p.t}</h3>
                 <p class="m-0 text-[15px] leading-relaxed text-gris">{p.d}</p>
@@ -174,8 +175,8 @@ const navLinks = [
     </section>
 
     <!-- Galería -->
-    <section class="px-6 pb-[88px]">
-      <div class="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(280px,100%),1fr))] gap-4">
+    <section class="px-6 pb-16 md:pb-[88px]">
+      <div class="carrusel revelar mx-auto max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
         {
           s.galeria.map((g, i) => (
             <Image
@@ -192,7 +193,7 @@ const navLinks = [
     </section>
 
     <!-- Para ti / Ten en cuenta -->
-    <section class="bg-white px-6 py-[88px]">
+    <section class="bg-white px-6 py-16 md:py-[88px]">
       <div class="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(320px,100%),1fr))] gap-5">
         <div class="flex flex-col gap-4 rounded-3xl bg-menta p-8">
           <h3 class="m-0 font-serif text-[30px] font-semibold">Es para ti si…</h3>
@@ -210,7 +211,7 @@ const navLinks = [
     </section>
 
     <!-- FAQ -->
-    <section class="px-6 py-[88px]">
+    <section class="px-6 py-16 md:py-[88px]">
       <div class="mx-auto flex max-w-[820px] flex-col gap-2">
         <h2 class="titulo mb-5 text-[clamp(36px,4vw,52px)] leading-[1.05]">Preguntas <em>frecuentes</em></h2>
         {
@@ -230,10 +231,10 @@ const navLinks = [
     </section>
 
     <!-- Otros tratamientos -->
-    <section id="otros" class="scroll-mt-4 bg-white px-6 py-[88px]">
+    <section id="otros" class="scroll-mt-4 bg-white px-6 py-16 md:py-[88px]">
       <div class="mx-auto flex max-w-[1200px] flex-col gap-8">
         <h2 class="titulo text-[clamp(36px,4vw,52px)] leading-[1.05]">Otros <em>tratamientos</em></h2>
-        <div class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">
+        <div class="carrusel revelar grid-cols-[repeat(auto-fit,minmax(240px,1fr))]">
           {
             otros.map((o) => (
               <a
@@ -246,6 +247,7 @@ const navLinks = [
                     alt=""
                     widths={[400, 600, 800]}
                     sizes="(min-width: 1200px) 384px, 100vw"
+                    transition:name={`foto-${o.slug}`}
                     class="block aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </span>
@@ -269,3 +271,16 @@ const navLinks = [
   </main>
   <Footer />
 </Base>
+
+<script>
+  // En celular, desplaza la fila de pestañas para que se vea el tratamiento activo.
+  const centrarPestana = () => {
+    const fila = document.querySelector<HTMLElement>('.fila-deslizable');
+    const activa = fila?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (!fila || !activa || fila.scrollWidth <= fila.clientWidth) return;
+    const desplazamiento =
+      activa.getBoundingClientRect().left - fila.getBoundingClientRect().left + fila.scrollLeft;
+    fila.scrollLeft = desplazamiento - (fila.clientWidth - activa.offsetWidth) / 2;
+  };
+  document.addEventListener('astro:page-load', centrarPestana);
+</script>
