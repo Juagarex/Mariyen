@@ -1,0 +1,321 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CtaWhatsapp from '../components/CtaWhatsapp.astro';
+import Flecha from '../components/Flecha.astro';
+import { servicios, urlServicio } from '../data/servicios';
+import { WHATSAPP_URL, WHATSAPP_TEXTO } from '../data/sitio';
+
+import hero from '../assets/images/hero.jpg';
+import cabinaVelas from '../assets/images/cabina-velas.jpg';
+import toalla from '../assets/images/toalla-turquesa.jpg';
+import masaje from '../assets/images/masaje.jpg';
+
+const [lipo, gluteos] = servicios;
+
+const navLinks = [
+  { href: '#tratamientos', label: 'Tratamientos' },
+  { href: '#resultados', label: 'Resultados' },
+  { href: '#nosotros', label: 'Nosotros' },
+  { href: '#sede', label: 'Sede' },
+];
+
+const pasos = [
+  { n: '01', t: 'Escríbenos', d: 'Por WhatsApp eliges día y hora para tu valoración.' },
+  { n: '02', t: 'Valoración gratis', d: 'Medidas, fotos y un plan con número de sesiones y precio.' },
+  { n: '03', t: 'Sesiones y control', d: 'Medimos tu avance a mitad y al final del plan.' },
+];
+
+const resultados = [
+  { zona: 'Abdomen', detalle: '[N] sesiones · [−X cm]', tono: 'bg-arena-2' },
+  { zona: 'Glúteos', detalle: '5 sesiones', tono: 'bg-arena-3' },
+  { zona: 'Rostro', detalle: '[N] sesiones', tono: 'bg-arena-4' },
+];
+
+const sede = [
+  { t: 'Dirección', v: 'Carrera 6 # 5-51 [confirmar]' },
+  { t: 'Horario', v: '[Lunes a sábado, 00:00–00:00]' },
+];
+---
+
+<Base
+  title="Mariyen Centro de Estética · Zipaquirá"
+  description="Tratamientos no invasivos para moldear, reducir medidas y definir en Zipaquirá. Valoración gratis con Mariyen Forero."
+>
+  <main>
+    <!-- Hero -->
+    <section class="p-4">
+      <div class="relative flex min-h-[760px] flex-col overflow-hidden rounded-[32px] bg-arena">
+        <Image
+          src={hero}
+          alt="Paciente relajada en la camilla durante un tratamiento"
+          class="absolute inset-0 h-full w-full object-cover object-[70%_center]"
+          loading="eager"
+          fetchpriority="high"
+          widths={[640, 1024, 1440, 1920]}
+          sizes="100vw"
+        />
+        <div
+          aria-hidden="true"
+          class="absolute inset-0 bg-[linear-gradient(180deg,rgba(245,241,236,0.94)_0%,rgba(245,241,236,0.86)_60%,rgba(245,241,236,0.5)_100%)] md:bg-[linear-gradient(90deg,rgba(245,241,236,0.96)_0%,rgba(245,241,236,0.88)_38%,rgba(245,241,236,0.15)_72%,rgba(245,241,236,0)_100%)]"
+        >
+        </div>
+        <div class="relative px-4 pt-4">
+          <Header links={navLinks} class="max-w-[1180px]" />
+        </div>
+        <div
+          class="relative mx-auto box-border flex w-full max-w-[1180px] flex-1 flex-wrap items-end justify-between gap-8 px-6 pt-[72px] pb-10"
+        >
+          <div class="flex max-w-[560px] flex-col gap-[22px]">
+            <p class="eyebrow text-tinta-3 before:bg-tinta-3">Estética corporal y facial en Zipaquirá</p>
+            <h1 class="titulo text-[clamp(48px,6vw,84px)] leading-[0.98] tracking-[-0.01em]">
+              Manos expertas, <em>resultados</em> que se notan.
+            </h1>
+            <p class="m-0 max-w-[470px] text-lg leading-relaxed text-tinta-2">
+              Tratamientos no invasivos para moldear, reducir medidas y definir, con un plan claro de sesiones y
+              precio desde tu primera visita.
+            </p>
+            <div class="flex flex-wrap gap-3">
+              <a href={WHATSAPP_URL} class="btn btn-primario">Valoración gratis <Flecha /></a>
+              <a href="#tratamientos" class="btn btn-secundario">Ver tratamientos</a>
+            </div>
+            <span
+              class="mt-[18px] flex items-center gap-2.5 self-start rounded-full bg-white/85 py-2 pr-4 pl-2 text-[13px]"
+            >
+              <span class="size-8 rounded-full bg-[#B9A99A]"></span>
+              <span><strong>Mariyen Forero</strong> atiende cada valoración</span>
+            </span>
+          </div>
+
+          <div
+            class="box-border flex w-full max-w-[340px] flex-col gap-1 rounded-3xl bg-white p-[22px] shadow-[0_16px_40px_rgba(31,42,43,0.14)]"
+          >
+            <div class="flex items-baseline justify-between border-b border-lino pb-2.5">
+              <span class="font-serif text-2xl font-semibold">Planes del mes</span>
+              <span class="text-xs text-gris-2">[Mes]</span>
+            </div>
+            {
+              [lipo, gluteos].map((s) => (
+                <a
+                  href={urlServicio(s.slug)}
+                  class="flex items-center gap-3 border-b border-lino py-3 text-tinta no-underline hover:text-petroleo"
+                >
+                  <Image src={s.foto} alt="" width={88} height={88} class="size-11 shrink-0 rounded-xl object-cover" />
+                  <span class="flex flex-1 flex-col">
+                    <span class="text-sm font-bold">{s.nombre}</span>
+                    <span class="text-xs text-gris-2">
+                      {s.sesiones} · {s.dcto}
+                    </span>
+                  </span>
+                  <span class="text-sm font-bold">{s.precio}</span>
+                </a>
+              ))
+            }
+            <div class="flex items-center gap-3 pt-3 pb-0.5">
+              <span class="flex size-11 shrink-0 items-center justify-center rounded-xl bg-menta">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#1F4A4C"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg
+                >
+              </span>
+              <span class="flex flex-1 flex-col">
+                <span class="text-sm font-bold">Valoración</span>
+                <span class="text-xs text-gris-2">Con Mariyen, sin compromiso</span>
+              </span>
+              <span class="text-sm font-bold">$0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tratamientos -->
+    <section id="tratamientos" class="scroll-mt-4 px-6 pt-24 pb-[88px]">
+      <div class="mx-auto flex max-w-[1180px] flex-col gap-9">
+        <div class="flex flex-wrap items-end justify-between gap-5">
+          <h2 class="titulo text-[clamp(40px,4.6vw,60px)]">Hecho para <em>verte bien.</em></h2>
+          <div class="flex max-w-[340px] flex-col gap-2.5">
+            <p class="m-0 text-[15px] leading-relaxed text-gris">
+              Cada tratamiento empieza con una valoración gratis y un plan de sesiones con precio cerrado.
+            </p>
+            <a href={urlServicio(lipo.slug)} class="text-sm font-semibold no-underline">Todos los tratamientos →</a>
+          </div>
+        </div>
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4">
+          {
+            servicios.map((s) => (
+              <a
+                href={urlServicio(s.slug)}
+                class="group relative box-border flex aspect-[4/5] flex-col justify-end overflow-hidden rounded-3xl p-3 text-tinta no-underline hover:text-tinta"
+                style={{ background: s.tono }}
+              >
+                <Image
+                  src={s.foto}
+                  alt={s.fotoAlt}
+                  widths={[400, 600, 800]}
+                  sizes="(min-width: 1180px) 290px, (min-width: 640px) 50vw, 100vw"
+                  class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <span class="relative flex items-end justify-between gap-2 rounded-2xl bg-white px-4 py-3.5">
+                  <span class="flex flex-col gap-0.5">
+                    <span class="text-[15px] font-bold">{s.nombreCorto}</span>
+                    <span class="text-xs text-gris-2">{s.sesiones}</span>
+                  </span>
+                  <span
+                    class:list={[
+                      'font-serif font-semibold',
+                      s.precio.startsWith('[') ? 'text-[22px]' : 'text-[26px]',
+                    ]}
+                  >
+                    {s.precio}
+                  </span>
+                </span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Nosotros -->
+    <section id="nosotros" class="scroll-mt-4 px-6 pb-24">
+      <div class="mx-auto grid max-w-[1180px] grid-cols-[repeat(auto-fit,minmax(min(340px,100%),1fr))] items-start gap-12">
+        <Image
+          src={cabinaVelas}
+          alt="Toallas enrolladas y velas encendidas en la cabina"
+          widths={[600, 900, 1200]}
+          sizes="(min-width: 1180px) 566px, 100vw"
+          class="block aspect-square w-full rounded-[28px] bg-[#CDBFB2] object-cover"
+        />
+        <div class="flex flex-col gap-[22px] pt-3">
+          <p class="eyebrow">Desde [año] · Zipaquirá</p>
+          <h2 class="titulo text-[clamp(40px,4.6vw,60px)]">Una cabina, <em>una especialista.</em></h2>
+          <p class="m-0 text-[17px] leading-[1.7] text-gris">
+            En Mariyen te atiende siempre la misma persona: desde la valoración hasta la última sesión. Sin prisas y
+            con medidas reales para ver tu avance. [Ajustar con la historia de Mariyen]
+          </p>
+          <a href="#sede" class="text-[15px] font-semibold no-underline">Conoce la sede →</a>
+          <div class="grid grid-cols-3 gap-4 border-t border-linea-2 pt-[22px]">
+            <div class="flex flex-col gap-1">
+              <span class="text-[13px] text-gris-2">Años de experiencia</span>
+              <span class="font-serif text-[40px]">[N]</span>
+            </div>
+            <div class="flex flex-col gap-1">
+              <span class="text-[13px] text-gris-2">Tratamientos</span>
+              <span class="font-serif text-[40px]">{servicios.length}</span>
+            </div>
+            <div class="flex flex-col gap-1">
+              <span class="text-[13px] text-gris-2">Valoración</span>
+              <span class="font-serif text-[40px]">$0</span>
+            </div>
+          </div>
+          <Image
+            src={toalla}
+            alt="Toalla turquesa y velas, detalle de la cabina"
+            widths={[600, 900, 1200]}
+            sizes="(min-width: 1180px) 566px, 100vw"
+            class="block h-[220px] w-full rounded-3xl bg-arena-2 object-cover"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Así empiezas -->
+    <section class="bg-white px-6 py-24">
+      <div class="mx-auto flex max-w-[1180px] flex-col gap-10">
+        <h2 class="titulo text-[clamp(40px,4.6vw,60px)]">Así <em>empiezas.</em></h2>
+        <ol class="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-5 p-0">
+          {
+            pasos.map((p) => (
+              <li class="flex flex-col gap-2.5 border-t border-linea pt-[22px]">
+                <span class="font-serif text-[34px] text-petroleo italic">{p.n}</span>
+                <h3 class="m-0 text-lg font-bold">{p.t}</h3>
+                <p class="m-0 text-[15px] leading-relaxed text-gris">{p.d}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <!-- Resultados -->
+    <section id="resultados" class="scroll-mt-4 px-6 py-24">
+      <div class="mx-auto flex max-w-[1180px] flex-col gap-9">
+        <div class="flex flex-wrap items-end justify-between gap-5">
+          <h2 class="titulo text-[clamp(40px,4.6vw,60px)]">Pacientes <em>reales.</em></h2>
+          <p class="m-0 max-w-[340px] text-sm leading-relaxed text-gris-2">
+            Publicadas con autorización. Los resultados varían según cada persona.
+          </p>
+        </div>
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(min(300px,100%),1fr))] gap-4">
+          {
+            resultados.map((r) => (
+              <figure class="m-0 flex flex-col gap-3 rounded-3xl bg-white p-3">
+                <div class="grid aspect-[4/3] grid-cols-2 gap-1.5">
+                  <span class="flex items-end rounded-[16px_6px_6px_16px] bg-[#E6DED4] p-2.5 text-xs font-semibold">
+                    Antes
+                  </span>
+                  <span class:list={['flex items-end rounded-[6px_16px_16px_6px] p-2.5 text-xs font-semibold', r.tono]}>
+                    Después
+                  </span>
+                </div>
+                <figcaption class="flex justify-between px-1.5 pb-1.5 text-sm">
+                  <strong>{r.zona}</strong>
+                  <span class="text-gris-2">{r.detalle}</span>
+                </figcaption>
+              </figure>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Sede -->
+    <section id="sede" class="scroll-mt-4 bg-white px-6 py-24">
+      <div class="mx-auto grid max-w-[1180px] grid-cols-[repeat(auto-fit,minmax(min(320px,100%),1fr))] items-center gap-8">
+        <div class="flex flex-col gap-[22px]">
+          <h2 class="titulo text-[clamp(40px,4.6vw,60px)]">Te esperamos <em>en Zipaquirá.</em></h2>
+          <div class="flex flex-col gap-2.5">
+            {
+              sede.map((d) => (
+                <div class="flex flex-wrap justify-between gap-3 rounded-[18px] bg-crema px-[22px] py-[18px]">
+                  <span class="font-serif text-[22px] font-semibold">{d.t}</span>
+                  <span class="text-[15px] text-gris">{d.v}</span>
+                </div>
+              ))
+            }
+            <div class="flex flex-wrap justify-between gap-3 rounded-[18px] bg-crema px-[22px] py-[18px]">
+              <span class="font-serif text-[22px] font-semibold">WhatsApp</span>
+              <a href={WHATSAPP_URL} class="text-[15px] underline">{WHATSAPP_TEXTO}</a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="relative box-border flex min-h-[380px] items-end overflow-hidden rounded-[28px] bg-salvia p-[22px]"
+        >
+          <Image
+            src={masaje}
+            alt="Masaje en la cabina de Mariyen"
+            widths={[600, 900, 1200]}
+            sizes="(min-width: 1180px) 574px, 100vw"
+            class="absolute inset-0 h-full w-full object-cover"
+          />
+          <span class="relative rounded-full bg-white/90 px-3.5 py-2 text-[13px] text-tinta-3">
+            [Reemplazar por foto de la fachada y mapa]
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <CtaWhatsapp>Tu primera valoración <em>es gratis.</em></CtaWhatsapp>
+  </main>
+  <Footer />
+</Base>

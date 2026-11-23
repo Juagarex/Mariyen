@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Manrope", system-ui, sans-serif;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+
+  /* Paleta Mariyen */
+  --color-crema: #F5F1EC;
+  --color-arena: #DCCFC2;
+  --color-arena-2: #D8CBBE;
+  --color-arena-3: #CBBDB0;
+  --color-arena-4: #E2D3C8;
+  --color-salvia: #D3D9D4;
+  --color-menta: #E3EEEC;
+  --color-rosa: #F3E6DF;
+  --color-lino: #ECE6DF;
+  --color-linea: #CFC6BC;
+  --color-linea-2: #D9D0C6;
+  --color-linea-3: #D6CEC5;
+
+  --color-tinta: #1F2A2B;
+  --color-tinta-2: #2F3838;
+  --color-tinta-3: #3C4545;
+  --color-gris: #46504F;
+  --color-gris-2: #5B6667;
+  --color-gris-3: #9AA3A3;
+
+  --color-petroleo: #1F4A4C;
+  --color-petroleo-oscuro: #163739;
+  --color-petroleo-claro: #DCE8E6;
+  --color-terracota: #8A3E2B;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-crema font-sans text-tinta antialiased;
+  }
+  a {
+    @apply text-petroleo hover:text-petroleo-oscuro;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-petroleo;
+  }
+}
+
+@layer components {
+  .titulo {
+    @apply m-0 font-serif font-medium leading-[1.02];
+  }
+  .titulo em {
+    @apply italic text-petroleo;
+  }
+  .btn {
+    @apply inline-flex min-h-[50px] items-center gap-2.5 rounded-full px-[26px] py-[15px] text-base font-semibold no-underline transition-colors;
+  }
+  /* Usar junto a .btn: class="btn btn-primario" */
+  .btn-primario {
+    @apply bg-petroleo text-white hover:bg-petroleo-oscuro hover:text-white;
+  }
+  .btn-secundario {
+    @apply bg-white text-tinta hover:bg-lino hover:text-tinta;
+  }
+  .eyebrow {
+    @apply m-0 flex items-center gap-2.5 text-[13px] text-gris-2;
+  }
+  .eyebrow::before {
+    content: "";
+    @apply h-px w-7 bg-gris-3;
+  }
+}

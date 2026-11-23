@@ -1,0 +1,42 @@
+---
+import Logo from './Logo.astro';
+import Flecha from './Flecha.astro';
+import { WHATSAPP_URL } from '../data/sitio';
+
+interface Props {
+  links: { href: string; label: string; activo?: boolean }[];
+  class?: string;
+}
+
+const { links, class: clase = '' } = Astro.props;
+---
+
+<header
+  class:list={[
+    'mx-auto flex flex-wrap items-center justify-between gap-3 rounded-[28px] bg-white py-2.5 pr-2.5 pl-6 sm:rounded-full',
+    clase,
+  ]}
+>
+  <a href="/" class="flex items-center gap-2.5 text-petroleo no-underline">
+    <Logo />
+    <span class="font-serif text-2xl font-semibold">Mariyen</span>
+  </a>
+  <nav aria-label="Principal" class="flex flex-wrap items-center gap-x-[22px] gap-y-1 text-sm font-medium">
+    {
+      links.map((l) => (
+        <a
+          href={l.href}
+          class:list={['no-underline', l.activo ? 'font-bold text-petroleo' : 'text-tinta hover:text-petroleo']}
+        >
+          {l.label}
+        </a>
+      ))
+    }
+    <a
+      href={WHATSAPP_URL}
+      class="inline-flex min-h-11 items-center gap-2 rounded-full bg-petroleo px-5 py-3 font-semibold text-white no-underline hover:bg-petroleo-oscuro hover:text-white"
+    >
+      Agendar valoración <Flecha />
+    </a>
+  </nav>
+</header>

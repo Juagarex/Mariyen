@@ -1,0 +1,25 @@
+---
+import { WHATSAPP_URL } from '../data/sitio';
+
+interface Props {
+  texto?: string;
+}
+const { texto = 'Escríbenos y te respondemos con los horarios disponibles.' } = Astro.props;
+---
+
+<section class="px-6 py-24">
+  <div
+    class="mx-auto flex max-w-[1180px] flex-col items-center gap-[18px] rounded-[32px] bg-petroleo px-8 py-[72px] text-center text-white"
+  >
+    <h2 class="titulo text-[clamp(40px,4.6vw,62px)] [&_em]:text-white">
+      <slot />
+    </h2>
+    <p class="m-0 max-w-[520px] text-[17px] leading-relaxed text-petroleo-claro">{texto}</p>
+    <a
+      href={WHATSAPP_URL}
+      class="inline-flex min-h-[50px] items-center rounded-full bg-white px-[30px] py-[15px] text-base font-bold text-petroleo no-underline hover:bg-crema"
+    >
+      Escribir por WhatsApp
+    </a>
+  </div>
+</section>
