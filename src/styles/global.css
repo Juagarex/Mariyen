@@ -134,7 +134,101 @@
   }
 }
 
+/* --- Intro del hero: coreografía de aparición de la página ---
+   .intro-marco     el bloque del hero se abre desde un marco más pequeño
+   .intro-zoom      la foto se aleja (zoom out) mientras se abre
+   .intro-bajar     el menú baja
+   .intro-palabra   cada palabra del título sale de detrás de una máscara (usa --i)
+   .intro-subir     elementos que suben con retraso (usa --d)
+   .intro-derecha   la tarjeta entra desde la derecha (usa --d) */
+@keyframes marco {
+  from {
+    clip-path: inset(7% 6% 7% 6% round 56px);
+  }
+  to {
+    clip-path: inset(0 round 32px);
+  }
+}
+
+@keyframes zoom-salida {
+  from {
+    scale: 1.28;
+  }
+  to {
+    scale: 1;
+  }
+}
+
+@keyframes bajar {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes palabra {
+  from {
+    transform: translateY(110%) rotate(4deg);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes desde-derecha {
+  from {
+    opacity: 0;
+    transform: translateX(56px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+:root {
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.intro-palabra {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* espacio para los descendentes (g, p, q) sin que la máscara los corte */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.intro-palabra > * {
+  display: inline-block;
+}
+
 @media (prefers-reduced-motion: no-preference) {
+  .intro-marco {
+    animation: marco 1.4s var(--ease-expo) both;
+  }
+  .intro-zoom {
+    animation: zoom-salida 2.2s var(--ease-expo) both;
+  }
+  .intro-bajar {
+    animation: bajar 0.9s var(--ease-expo) 0.35s both;
+  }
+  .intro-palabra > * {
+    animation: palabra 1.1s var(--ease-expo) both;
+    animation-delay: calc(0.5s + var(--i, 0) * 0.07s);
+  }
+  .intro-subir {
+    animation: subir 1s var(--ease-expo) both;
+    animation-delay: var(--d, 0s);
+  }
+  .intro-derecha {
+    animation: desde-derecha 1.1s var(--ease-expo) both;
+    animation-delay: var(--d, 0s);
+  }
+
   .entrada,
   .entrada-2,
   .entrada-3 {

@@ -6,6 +6,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import CtaWhatsapp from '../../components/CtaWhatsapp.astro';
 import Flecha from '../../components/Flecha.astro';
+import TituloAnimado from '../../components/TituloAnimado.astro';
 import { servicios, urlServicio, type Servicio } from '../../data/servicios';
 import { WHATSAPP_URL } from '../../data/sitio';
 
@@ -72,13 +73,15 @@ const navLinks = [
     <section
       class="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(340px,100%),1fr))] items-center gap-12 px-6 pt-6 pb-16 md:pt-9 md:pb-[72px]"
     >
-      <div class="entrada flex flex-col gap-[22px]">
-        <p class="eyebrow">{s.zona}</p>
-        <h1 class="titulo text-[clamp(44px,5.4vw,72px)] tracking-[-0.01em]">
-          {s.t1} <em>{s.tItal}</em>
-        </h1>
-        <p class="m-0 max-w-[500px] text-lg leading-[1.65] text-gris">{s.intro}</p>
-        <div class="flex flex-wrap gap-2.5">
+      <div class="flex flex-col gap-[22px]">
+        <p class="intro-subir eyebrow" style="--d: 0.15s">{s.zona}</p>
+        <TituloAnimado
+          class="titulo text-[clamp(44px,5.4vw,72px)] tracking-[-0.01em]"
+          partes={[{ texto: s.t1 }, { texto: s.tItal, em: true }]}
+          inicio={-3}
+        />
+        <p class="intro-subir m-0 max-w-[500px] text-lg leading-[1.65] text-gris" style="--d: 0.6s">{s.intro}</p>
+        <div class="intro-subir flex flex-wrap gap-2.5" style="--d: 0.72s">
           <span class="flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1F4A4C" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
             {s.duracion}
@@ -92,7 +95,7 @@ const navLinks = [
             Sin incapacidad
           </span>
         </div>
-        <div class="flex flex-wrap gap-3 pt-1.5">
+        <div class="intro-subir flex flex-wrap gap-3 pt-1.5" style="--d: 0.84s">
           <a href={WHATSAPP_URL} class="btn btn-primario">Reservar valoración gratis <Flecha /></a>
           <a href="#pasos" class="btn btn-secundario">Ver cómo funciona</a>
         </div>
@@ -110,7 +113,8 @@ const navLinks = [
           style={{ background: s.tono }}
         />
         <div
-          class="entrada-3 absolute top-7 right-3 box-border flex w-[250px] flex-col gap-2.5 rounded-[22px] bg-white px-6 py-[22px] shadow-[0_12px_32px_rgba(31,42,43,0.12)] lg:-right-3"
+          style="--d: 0.7s"
+          class="intro-derecha absolute top-7 right-3 box-border flex w-[250px] flex-col gap-2.5 rounded-[22px] bg-white px-6 py-[22px] shadow-[0_12px_32px_rgba(31,42,43,0.12)] lg:-right-3"
         >
           <span class="text-[13px] text-gris-2">Plan completo · {s.sesiones}</span>
           <span class="font-serif text-[44px] leading-none font-semibold text-tinta">{s.precio}</span>

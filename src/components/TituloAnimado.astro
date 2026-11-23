@@ -1,0 +1,44 @@
+---
+/**
+ * Título que aparece palabra por palabra (clase .intro-palabra en global.css).
+ * partes: fragmentos de texto; los marcados con `em` van en cursiva y color de acento.
+ * El texto completo queda disponible para lectores de pantalla vía aria-label.
+ */
+interface Parte {
+  texto: string;
+  em?: boolean;
+}
+
+interface Props {
+  partes: Parte[];
+  as?: 'h1' | 'h2';
+  class?: string;
+  inicio?: number; // índice inicial para escalonar el retraso
+}
+
+const { partes, as: Tag = 'h1', class: clase = '', inicio = 0 } = Astro.props;
+
+const palabras = partes.flatMap((p) =>
+  p.texto
+    .trim()
+    .split(/\s+/)
+    .map((t) => ({ t, em: !!p.em })),
+);
+const textoCompleto = partes.map((p) => p.texto.trim()).join(' ');
+---
+
+<Tag class={clase} aria-label={textoCompleto}>
+  {
+    palabras.map((w, i) => (
+      <>
+        <span class="intro-palabra" aria-hidden="true">
+          {w.em ? (
+            <em style={`--i:${inicio + i}`}>{w.t}</em>
+          ) : (
+            <span style={`--i:${inicio + i}`}>{w.t}</span>
+          )}
+        </span>{' '}
+      </>
+    ))
+  }
+</Tag>
