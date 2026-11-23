@@ -9,12 +9,15 @@ import TituloAnimado from '../components/TituloAnimado.astro';
 import { servicios, urlServicio } from '../data/servicios';
 import { WHATSAPP_URL, WHATSAPP_TEXTO } from '../data/sitio';
 
-import hero from '../assets/images/hero.jpg';
+import PlanesDelMes from '../components/PlanesDelMes.astro';
+
+// Foto temporal del hero (Unsplash, Usen Parmanov). La anterior sigue en hero.jpg.
+import hero from '../assets/images/hero-bienestar.jpg';
 import cabinaVelas from '../assets/images/cabina-velas.jpg';
 import toalla from '../assets/images/toalla-turquesa.jpg';
 import masaje from '../assets/images/masaje.jpg';
 
-const [lipo, gluteos] = servicios;
+const [lipo] = servicios;
 
 const navLinks = [
   { href: '#tratamientos', label: 'Tratamientos' },
@@ -49,17 +52,21 @@ const sede = [
     <!-- Hero -->
     <section class="p-4">
       <div
-        class="intro-marco relative flex min-h-[640px] flex-col overflow-hidden rounded-[32px] bg-arena md:min-h-[760px]"
+        class="intro-marco relative flex min-h-[calc(100svh-2rem)] flex-col overflow-hidden rounded-[32px] bg-arena md:min-h-[760px]"
       >
         <div class="intro-zoom absolute inset-0">
+          <!--
+            En celular el hero es vertical y la foto horizontal se recorta: se pinta ~2,8 veces
+            el ancho de pantalla (de ahí el 280vw en sizes) y se centra en la persona.
+          -->
           <Image
             src={hero}
-            alt="Paciente relajada en la camilla durante un tratamiento"
-            class="parallax-hero absolute inset-0 h-full w-full object-cover object-[70%_center]"
+            alt="Mujer en bata blanca descansando en un sofá con una taza en las manos"
+            class="parallax-hero absolute inset-0 h-full w-full object-cover object-[58%_center] md:object-center"
             loading="eager"
             fetchpriority="high"
-            widths={[640, 1024, 1440, 1920]}
-            sizes="100vw"
+            widths={[828, 1280, 1920, 2560]}
+            sizes="(max-width: 767px) 280vw, 100vw"
           />
         </div>
         <div
@@ -98,53 +105,11 @@ const sede = [
             </span>
           </div>
 
-          <div
-            style="--d: 1.15s"
-            class="intro-derecha box-border flex w-full max-w-[340px] flex-col gap-1 rounded-3xl bg-white p-[22px] shadow-[0_16px_40px_rgba(31,42,43,0.14)]"
-          >
-            <div class="flex items-baseline justify-between border-b border-lino pb-2.5">
-              <span class="font-serif text-2xl font-semibold">Planes del mes</span>
-              <span class="text-xs text-gris-2">[Mes]</span>
-            </div>
-            {
-              [lipo, gluteos].map((s) => (
-                <a
-                  href={urlServicio(s.slug)}
-                  class="flex items-center gap-3 border-b border-lino py-3 text-tinta no-underline hover:text-petroleo"
-                >
-                  <Image src={s.foto} alt="" width={88} height={88} class="size-11 shrink-0 rounded-xl object-cover" />
-                  <span class="flex flex-1 flex-col">
-                    <span class="text-sm font-bold">{s.nombre}</span>
-                    <span class="text-xs text-gris-2">
-                      {s.sesiones} · {s.dcto}
-                    </span>
-                  </span>
-                  <span class="text-sm font-bold">{s.precio}</span>
-                </a>
-              ))
-            }
-            <div class="flex items-center gap-3 pt-3 pb-0.5">
-              <span class="flex size-11 shrink-0 items-center justify-center rounded-xl bg-menta">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#1F4A4C"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg
-                >
-              </span>
-              <span class="flex flex-1 flex-col">
-                <span class="text-sm font-bold">Valoración</span>
-                <span class="text-xs text-gris-2">Con Mariyen, sin compromiso</span>
-              </span>
-              <span class="text-sm font-bold">$0</span>
-            </div>
-          </div>
+          <!-- En escritorio la tarjeta va sobre la foto; en celular, debajo del hero -->
+          <PlanesDelMes class="intro-derecha hidden max-w-[340px] md:flex" style="--d: 1.15s" />
         </div>
       </div>
+      <PlanesDelMes class="revelar mt-4 flex md:hidden" />
     </section>
 
     <!-- Tratamientos -->
