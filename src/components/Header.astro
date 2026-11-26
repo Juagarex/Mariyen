@@ -1,5 +1,5 @@
 ---
-import Logo from './Logo.astro';
+import LogoHorizontal from './LogoHorizontal.astro';
 import Flecha from './Flecha.astro';
 import { waValoracion } from '../data/site';
 
@@ -24,17 +24,16 @@ const agendar = waValoracion(servicio);
 
 <header
   class:list={[
-    'relative mx-auto flex items-center justify-between gap-3 rounded-full bg-white py-2 pr-2 pl-5 shadow-[0_1px_2px_rgba(15,62,66,0.06)] md:py-2.5 md:pr-2.5 md:pl-6',
+    'relative mx-auto flex items-center justify-between gap-3 rounded-full bg-white py-2 pr-2 pl-5 shadow-[0_1px_2px_rgba(15,62,66,0.06)] lg:py-2.5 lg:pr-2.5 lg:pl-6',
     clase,
   ]}
 >
-  <a href="/" class="flex min-h-11 items-center gap-2.5 text-petroleo no-underline hover:text-petroleo" aria-label="Mariyen Centro de Estética, inicio">
-    <Logo />
-    <span class="font-display text-xl font-semibold">Mariyen</span>
+  <a href="/" class="flex min-h-11 items-center no-underline" aria-label="Mariyen Centro de Estética, inicio">
+    <LogoHorizontal />
   </a>
 
   <!-- Escritorio -->
-  <nav aria-label="Principal" class="hidden items-center gap-x-6 text-sm font-medium md:flex">
+  <nav aria-label="Principal" class="hidden items-center gap-x-6 text-sm font-medium whitespace-nowrap lg:flex">
     {
       links.map((l) => (
         <a
@@ -55,7 +54,7 @@ const agendar = waValoracion(servicio);
   </nav>
 
   <!-- Celular -->
-  <div class="flex items-center gap-1.5 md:hidden">
+  <div class="flex items-center gap-1.5 lg:hidden">
     <a
       href={agendar}
       class="inline-flex min-h-11 items-center rounded-full bg-turquesa px-4 text-sm font-semibold text-white no-underline hover:text-white"

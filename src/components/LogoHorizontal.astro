@@ -1,0 +1,16 @@
+---
+// Logo horizontal oficial (isotipo + "Mariyen · Centro de Estética").
+// Archivo fuente: src/assets/marca/logo-horizontal.svg. Proporción 552.85 × 150.
+import Logo from '../assets/marca/logo-horizontal.svg';
+
+interface Props {
+  /** Clases de ancho (el alto se ajusta solo con la proporción del logo). */
+  class?: string;
+}
+// 120 px en celulares muy angostos (<360 px), 140 px en celular,
+// 200 px en tablet y 240 px (1,5x) en computador desde 1024 px.
+const { class: clase = 'w-[120px] min-[360px]:w-[140px] md:w-[200px] lg:w-[240px]' } = Astro.props;
+---
+
+<!-- El enlace que lo contiene ya lleva el nombre accesible; el SVG es decorativo aquí. -->
+<Logo width={160} height={43} aria-hidden="true" role="presentation" class:list={['block h-auto shrink-0', clase]} />
