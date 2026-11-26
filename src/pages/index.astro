@@ -52,32 +52,36 @@ const faqJsonLd = {
     <!-- Hero -->
     <section class="p-4">
       <div
-        class="intro-marco relative flex min-h-[calc(100svh-2rem)] flex-col overflow-hidden rounded-[32px] bg-niebla md:min-h-[max(760px,calc(100svh-2rem))] md:bg-bruma"
+        class="intro-marco relative flex flex-col overflow-hidden rounded-[32px] bg-bruma md:min-h-[max(760px,calc(100svh-2rem))]"
+        style="--banda: clamp(340px, 92vw, 520px)"
       >
-        <!-- En escritorio la foto (vertical) ocupa el 60 % derecho para no ampliarse de más -->
+        <!--
+          Celular: la foto es una franja arriba (alto --banda) con el rostro visible y el texto debajo.
+          Escritorio: la foto (vertical) ocupa el 60 % derecho para no ampliarse de más.
+        -->
         <div
-          class="intro-zoom absolute inset-0 md:left-[50%] md:[mask-image:linear-gradient(90deg,transparent,black_30%)] lg:left-[40%]"
+          class="intro-zoom absolute inset-x-0 top-0 h-[var(--banda)] md:inset-y-0 md:left-[50%] md:h-auto md:[mask-image:linear-gradient(90deg,transparent,black_30%)] lg:left-[40%]"
         >
           <Image
             src={hero}
             alt="Mujer con los ojos cerrados y expresión serena, apoyada en una mesa blanca con luz suave"
-            class="parallax-hero absolute inset-0 h-full w-full object-cover object-[center_30%]"
+            class="parallax-hero absolute inset-0 h-full w-full object-cover object-[center_22%] md:object-[center_30%]"
             loading="eager"
             fetchpriority="high"
             widths={[828, 1280, 1920, 2400]}
-            sizes="(max-width: 767px) 160vw, 62vw"
+            sizes="(max-width: 767px) 100vw, 62vw"
           />
         </div>
         <div
           aria-hidden="true"
-          class="absolute inset-0 bg-[linear-gradient(180deg,rgba(244,247,246,0.94)_0%,rgba(244,247,246,0.86)_60%,rgba(244,247,246,0.35)_100%)] md:bg-[linear-gradient(90deg,rgba(244,247,246,1)_0%,rgba(244,247,246,1)_40%,rgba(244,247,246,0.7)_50%,rgba(244,247,246,0.15)_64%,rgba(244,247,246,0)_76%)]"
+          class="absolute inset-0 bg-[linear-gradient(180deg,rgba(244,247,246,0)_0px,rgba(244,247,246,0)_calc(var(--banda)*0.55),rgba(244,247,246,1)_calc(var(--banda)_-_16px))] md:bg-[linear-gradient(90deg,rgba(244,247,246,1)_0%,rgba(244,247,246,1)_40%,rgba(244,247,246,0.7)_50%,rgba(244,247,246,0.15)_64%,rgba(244,247,246,0)_76%)]"
         >
         </div>
         <div class="intro-bajar relative z-10 px-4 pt-4">
           <Header class="max-w-[1180px]" />
         </div>
         <div
-          class="relative mx-auto box-border flex w-full max-w-[1180px] flex-1 flex-wrap items-end justify-between gap-8 px-6 pt-12 pb-8 md:pt-[72px] md:pb-10"
+          class="relative mx-auto box-border flex w-full max-w-[1180px] flex-1 flex-wrap items-end justify-between gap-8 px-6 pt-[calc(var(--banda)_-_140px)] pb-8 md:pt-[72px] md:pb-10"
         >
           <div class="flex max-w-[600px] flex-col gap-[22px]">
             <p class="intro-subir eyebrow text-texto-2" style="--d: 0.45s">
