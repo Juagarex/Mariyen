@@ -203,31 +203,31 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .intro-marco {
-    animation: marco 1.4s var(--ease-expo) both;
+    animation: marco 1.4s var(--ease-expo) backwards;
   }
   .intro-zoom {
-    animation: zoom-salida 2.2s var(--ease-expo) both;
+    animation: zoom-salida 2.2s var(--ease-expo) backwards;
   }
   .intro-bajar {
-    animation: bajar 0.9s var(--ease-expo) 0.35s both;
+    animation: bajar 0.9s var(--ease-expo) 0.35s backwards;
   }
   .intro-palabra > * {
-    animation: palabra 1.1s var(--ease-expo) both;
+    animation: palabra 1.1s var(--ease-expo) backwards;
     animation-delay: calc(0.5s + var(--i, 0) * 0.07s);
   }
   .intro-subir {
-    animation: subir 1s var(--ease-expo) both;
+    animation: subir 1s var(--ease-expo) backwards;
     animation-delay: var(--d, 0s);
   }
   .intro-derecha {
-    animation: desde-derecha 1.1s var(--ease-expo) both;
+    animation: desde-derecha 1.1s var(--ease-expo) backwards;
     animation-delay: var(--d, 0s);
   }
 
   .entrada,
   .entrada-2,
   .entrada-3 {
-    animation: subir 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation: subir 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
   }
   .entrada-2 {
     animation-delay: 0.12s;
