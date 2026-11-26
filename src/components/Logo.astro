@@ -1,22 +1,11 @@
 ---
+// Isotipo oficial de Mariyen (archivo fuente: src/assets/marca/isotipo.svg, color #49C8CA).
+import Isotipo from '../assets/marca/isotipo.svg';
+
 interface Props {
   size?: number;
 }
-const { size = 30 } = Astro.props;
+const { size = 32 } = Astro.props;
 ---
 
-<svg
-  width={size}
-  height={size}
-  viewBox="0 0 48 48"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="2"
-  stroke-linejoin="round"
-  aria-hidden="true"
->
-  <path d="M24 25C18 11 6 8 8 18C9 24 18 27 24 25Z"></path>
-  <path d="M24 25C30 11 42 8 40 18C39 24 30 27 24 25Z"></path>
-  <path d="M24 25C18 29 10 35 14 40C18 43 23 34 24 25Z"></path>
-  <path d="M24 25C30 29 38 35 34 40C30 43 25 34 24 25Z"></path>
-</svg>
+<Isotipo width={size} height={size} aria-hidden="true" class="shrink-0" />
