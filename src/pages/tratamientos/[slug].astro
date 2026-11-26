@@ -7,8 +7,12 @@ import Footer from '../../components/Footer.astro';
 import CtaWhatsapp from '../../components/CtaWhatsapp.astro';
 import Flecha from '../../components/Flecha.astro';
 import TituloAnimado from '../../components/TituloAnimado.astro';
-import { servicios, urlServicio, type Servicio } from '../../data/servicios';
-import { WHATSAPP_URL } from '../../data/sitio';
+import Preguntas from '../../components/Preguntas.astro';
+import FormasDePago from '../../components/FormasDePago.astro';
+import MensajeCentral from '../../components/MensajeCentral.astro';
+import PestanasTratamientos from '../../components/PestanasTratamientos.astro';
+import { servicios, urlServicio, URL_OTROS, type Servicio } from '../../data/servicios';
+import { NOTA_RESULTADOS, SITE_URL, precio, waValoracion } from '../../data/site';
 
 export const getStaticPaths = (() =>
   servicios.map((s) => ({ params: { slug: s.slug }, props: { s } }))) satisfies GetStaticPaths;
@@ -19,85 +23,91 @@ interface Props {
 
 const { s } = Astro.props;
 const otros = servicios.filter((o) => o.slug !== s.slug);
-const tonosGaleria = ['#D8CBBE', '#CBBDB0', '#E2D3C8'];
+const tonosGaleria = ['#DCE8E6', '#D5E3E1', '#E3ECEA'];
+const url = new URL(urlServicio(s.slug), SITE_URL).href;
+const varias = s.opciones.length > 1;
 
-const navLinks = [
-  { href: '/', label: 'Inicio' },
-  { href: '#otros', label: 'Tratamientos', activo: true },
-  { href: '/#resultados', label: 'Resultados' },
-  { href: '/#sede', label: 'Sede' },
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: s.nombre,
+    serviceType: s.nombre,
+    description: s.intro,
+    url,
+    provider: { '@id': `${SITE_URL}/#negocio` },
+    areaServed: [
+      { '@type': 'City', name: 'Ubaté' },
+      { '@type': 'AdministrativeArea', name: 'Provincia de Ubaté, Cundinamarca' },
+    ],
+    offers: s.opciones.map((o) => ({
+      '@type': 'Offer',
+      name: `${s.nombre} · ${o.nombre}`,
+      price: o.valor,
+      priceCurrency: 'COP',
+      url,
+      availability: 'https://schema.org/InStock',
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: s.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE_URL}/` },
+      { '@type': 'ListItem', position: 2, name: s.nombre, item: url },
+    ],
+  },
 ];
 ---
 
 <Base
-  title={`${s.nombre} en Zipaquirá · Mariyen Centro de Estética`}
-  description={s.intro}
+  title={s.seo.title}
+  description={s.seo.description}
+  jsonLd={jsonLd}
+  mensajeWhatsapp={`Hola, quiero agendar mi valoración gratis para el ${s.enFrase}`}
 >
-  <div class="px-6 pt-4">
-    <Header links={navLinks} class="max-w-[1200px] shadow-[0_1px_2px_rgba(31,42,43,0.06)]" />
+  <div class="px-4 pt-4 sm:px-6">
+    <Header actual="/#tratamientos" servicio={s.enFrase} class="max-w-[1200px]" />
   </div>
 
   <main>
     <div class="mx-auto flex max-w-[1200px] flex-col gap-[18px] px-6 pt-7">
-      <nav aria-label="Ruta" class="flex flex-wrap gap-2 text-sm text-gris-2">
-        <a href="/" class="text-gris-2 underline hover:text-petroleo">Inicio</a>
+      <nav aria-label="Ruta" class="flex flex-wrap gap-2 text-sm text-texto-3">
+        <a href="/" class="text-texto-3 underline hover:text-turquesa">Inicio</a>
         <span aria-hidden="true">/</span>
-        <span>Tratamientos</span>
+        <a href="/#tratamientos" class="text-texto-3 underline hover:text-turquesa">Tratamientos</a>
         <span aria-hidden="true">/</span>
-        <span class="font-semibold text-tinta" aria-current="page">{s.nombre}</span>
+        <span class="font-semibold text-petroleo" aria-current="page">{s.nombre}</span>
       </nav>
-      <nav aria-label="Cambiar de tratamiento" class="fila-deslizable">
-        {
-          servicios.map((t) => {
-            const activo = t.slug === s.slug;
-            return (
-              <a
-                href={urlServicio(t.slug)}
-                aria-current={activo ? 'page' : undefined}
-                class:list={[
-                  'inline-flex min-h-11 items-center rounded-full border px-[18px] py-2.5 text-sm font-semibold no-underline transition-colors',
-                  activo
-                    ? 'border-petroleo bg-petroleo text-white hover:text-white'
-                    : 'border-linea-3 bg-white text-tinta hover:border-petroleo hover:text-petroleo',
-                ]}
-              >
-                {t.nombre}
-              </a>
-            );
-          })
-        }
-      </nav>
+      <PestanasTratamientos actual={s.slug} />
     </div>
 
     <!-- Hero del servicio -->
     <section
-      class="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(340px,100%),1fr))] items-center gap-12 px-6 pt-6 pb-16 md:pt-9 md:pb-[72px]"
+      class="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(340px,100%),1fr))] items-center gap-12 px-6 pt-6 pb-12 md:pt-9 md:pb-16"
     >
       <div class="flex flex-col gap-[22px]">
-        <p class="intro-subir eyebrow" style="--d: 0.15s">{s.zona}</p>
-        <TituloAnimado
-          class="titulo text-[clamp(44px,5.4vw,72px)] tracking-[-0.01em]"
-          partes={[{ texto: s.t1 }, { texto: s.tItal, em: true }]}
-          inicio={-3}
-        />
-        <p class="intro-subir m-0 max-w-[500px] text-lg leading-[1.65] text-gris" style="--d: 0.6s">{s.intro}</p>
-        <div class="intro-subir flex flex-wrap gap-2.5" style="--d: 0.72s">
-          <span class="flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1F4A4C" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
-            {s.duracion}
-          </span>
-          <span class="flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1F4A4C" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M4 10h16M9 3v4M15 3v4"></path></svg>
-            {s.frecuencia}
-          </span>
-          <span class="flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1F4A4C" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
-            Sin incapacidad
-          </span>
-        </div>
+        <p class="intro-subir eyebrow" style="--d: 0.15s">{s.zona} · Ubaté</p>
+        <TituloAnimado class="titulo text-[clamp(36px,5vw,60px)]" partes={[{ texto: s.nombre }]} inicio={-3} />
+        <p class="intro-subir m-0 max-w-[520px] text-lg leading-[1.65] text-texto-2" style="--d: 0.55s">{s.intro}</p>
+        <ul class="intro-subir m-0 flex list-none flex-wrap gap-2.5 p-0" style="--d: 0.7s">
+          {
+            ['Sin dolor', 'Sin fajas', 'Sin dietas'].map((t) => (
+              <li class="flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-medium">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0F6B6E" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+                {t}
+              </li>
+            ))
+          }
+        </ul>
         <div class="intro-subir flex flex-wrap gap-3 pt-1.5" style="--d: 0.84s">
-          <a href={WHATSAPP_URL} class="btn btn-primario">Reservar valoración gratis <Flecha /></a>
-          <a href="#pasos" class="btn btn-secundario">Ver cómo funciona</a>
+          <a href={waValoracion(s.enFrase)} class="btn btn-primario">Agendar valoración gratis <Flecha /></a>
+          <a href="#precios" class="btn btn-secundario">Ver precios</a>
         </div>
       </div>
       <div class="relative">
@@ -112,23 +122,37 @@ const navLinks = [
           class="block aspect-[5/6] w-full rounded-[28px] object-cover"
           style={{ background: s.tono }}
         />
-        <div
-          style="--d: 0.7s"
-          class="intro-derecha absolute top-7 right-3 box-border flex w-[250px] flex-col gap-2.5 rounded-[22px] bg-white px-6 py-[22px] shadow-[0_12px_32px_rgba(31,42,43,0.12)] lg:-right-3"
-        >
-          <span class="text-[13px] text-gris-2">Plan completo · {s.sesiones}</span>
-          <span class="font-serif text-[44px] leading-none font-semibold text-tinta">{s.precio}</span>
-          {
-            s.antes && (
-              <span class="text-sm text-gris-2">
-                Antes <span class="line-through">{s.antes}</span> ·{' '}
-                <strong class="text-terracota">{s.dcto}</strong>
-              </span>
-            )
-          }
-          <span class="border-t border-lino pt-2.5 text-sm text-gris">
-            Financiación del 100% · Valoración sin costo
-          </span>
+      </div>
+    </section>
+
+    <MensajeCentral />
+
+    <!-- Precios -->
+    <section id="precios" class="scroll-mt-4 px-6 py-16 md:py-20">
+      <div class="mx-auto grid max-w-[1200px] items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+        <div class="flex flex-col gap-4">
+          <h2 class="titulo text-[clamp(30px,4vw,44px)]">{varias ? 'Precios' : 'Precio'} <em>{varias ? 'por plan' : 'claro'}</em></h2>
+          <p class="m-0 text-[17px] leading-relaxed text-texto-2">
+            El precio queda claro desde tu valoración, sin costos escondidos. Puedes pagar en efectivo, por
+            transferencia, a cuotas, con Addi o con Sistecrédito.
+          </p>
+          <p class="m-0 rounded-2xl bg-agua-claro px-5 py-4 text-[15px] text-petroleo">{NOTA_RESULTADOS}</p>
+        </div>
+        <div class="revelar rounded-3xl bg-white p-6 md:p-8">
+          <ul class="m-0 flex list-none flex-col p-0">
+            {
+              s.opciones.map((o) => (
+                <li class="flex items-baseline justify-between gap-4 border-b border-niebla py-4 last:border-0">
+                  <span class="font-semibold">
+                    {varias ? o.nombre : s.nombre}
+                    {!varias && <span class="block text-sm font-medium text-texto-3">{s.detallePrecio}</span>}
+                  </span>
+                  <span class="precio text-2xl text-petroleo">{precio(o.valor)}</span>
+                </li>
+              ))
+            }
+          </ul>
+          <a href={waValoracion(s.enFrase)} class="btn btn-primario mt-4 w-full">Agendar valoración gratis</a>
         </div>
       </div>
     </section>
@@ -136,23 +160,18 @@ const navLinks = [
     <!-- Beneficios -->
     <section class="bg-white px-6 py-16 md:py-[88px]">
       <div class="mx-auto flex max-w-[1200px] flex-col gap-10">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <h2 class="titulo text-[clamp(36px,4vw,52px)] leading-[1.05]">Por qué <em>elegirlo</em></h2>
-          <p class="m-0 max-w-[360px] text-[15px] leading-relaxed text-gris-2">
-            Lo que obtienes con este tratamiento en Mariyen.
-          </p>
-        </div>
+        <h2 class="titulo text-[clamp(30px,4vw,44px)]">Por qué <em>elegirlo</em></h2>
         <div class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">
           {
             s.beneficios.map((b) => (
-              <article class="revelar flex flex-col gap-3 rounded-[22px] bg-crema p-[26px]">
-                <span class="flex size-10 items-center justify-center rounded-full bg-white">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F4A4C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <article class="revelar flex flex-col gap-3 rounded-[22px] bg-bruma p-[26px]">
+                <span class="flex size-10 items-center justify-center rounded-full bg-agua text-petroleo">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="M20 6 9 17l-5-5" />
                   </svg>
                 </span>
-                <h3 class="m-0 text-lg font-bold">{b.t}</h3>
-                <p class="m-0 text-[15px] leading-relaxed text-gris">{b.d}</p>
+                <h3 class="m-0 font-display text-lg font-semibold">{b.t}</h3>
+                <p class="m-0 text-[15px] leading-relaxed text-texto-2">{b.d}</p>
               </article>
             ))
           }
@@ -163,14 +182,14 @@ const navLinks = [
     <!-- Pasos -->
     <section id="pasos" class="scroll-mt-4 px-6 py-16 md:py-[88px]">
       <div class="mx-auto flex max-w-[1200px] flex-col gap-11">
-        <h2 class="titulo text-[clamp(36px,4vw,52px)] leading-[1.05]">Tu proceso, <em>paso a paso</em></h2>
+        <h2 class="titulo text-[clamp(30px,4vw,44px)]">Tu proceso, <em>paso a paso</em></h2>
         <ol class="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-5 p-0">
           {
             s.pasos.map((p) => (
-              <li class="revelar flex flex-col gap-2.5 border-t border-linea pt-[22px]">
-                <span class="font-serif text-[34px] text-petroleo italic">{p.n}</span>
+              <li class="revelar flex flex-col gap-2.5 border-t-2 border-agua pt-[22px]">
+                <span class="font-display text-3xl font-semibold text-turquesa">{p.n}</span>
                 <h3 class="m-0 text-lg font-bold">{p.t}</h3>
-                <p class="m-0 text-[15px] leading-relaxed text-gris">{p.d}</p>
+                <p class="m-0 text-[15px] leading-relaxed text-texto-2">{p.d}</p>
               </li>
             ))
           }
@@ -178,8 +197,8 @@ const navLinks = [
       </div>
     </section>
 
-    <!-- Galería -->
-    <section class="px-6 pb-16 md:pb-[88px]">
+    <!-- Galería (fotos de ambiente, no de resultados) -->
+    <section class="px-6 pb-16 md:pb-[88px]" aria-label="Ambiente del centro">
       <div class="carrusel revelar mx-auto max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(280px,1fr))]">
         {
           s.galeria.map((g, i) => (
@@ -187,7 +206,7 @@ const navLinks = [
               src={g.src}
               alt={g.alt}
               widths={[400, 600, 800]}
-              sizes="(min-width: 1200px) 384px, (min-width: 640px) 50vw, 100vw"
+              sizes="(min-width: 1200px) 384px, (min-width: 640px) 50vw, 80vw"
               class="block aspect-[4/5] w-full rounded-3xl object-cover"
               style={{ background: tonosGaleria[i % 3] }}
             />
@@ -199,68 +218,55 @@ const navLinks = [
     <!-- Para ti / Ten en cuenta -->
     <section class="bg-white px-6 py-16 md:py-[88px]">
       <div class="mx-auto grid max-w-[1200px] grid-cols-[repeat(auto-fit,minmax(min(320px,100%),1fr))] gap-5">
-        <div class="flex flex-col gap-4 rounded-3xl bg-menta p-8">
-          <h3 class="m-0 font-serif text-[30px] font-semibold">Es para ti si…</h3>
+        <div class="flex flex-col gap-4 rounded-3xl bg-agua-claro p-8">
+          <h2 class="m-0 font-display text-2xl font-semibold">Es para ti si…</h2>
           <ul class="m-0 flex list-disc flex-col gap-2.5 pl-5 text-base leading-[1.55]">
             {s.ideal.map((i) => <li>{i}</li>)}
           </ul>
         </div>
-        <div class="flex flex-col gap-4 rounded-3xl bg-rosa p-8">
-          <h3 class="m-0 font-serif text-[30px] font-semibold">Ten en cuenta</h3>
+        <div class="flex flex-col gap-4 rounded-3xl bg-bruma p-8">
+          <h2 class="m-0 font-display text-2xl font-semibold">Ten en cuenta</h2>
           <ul class="m-0 flex list-disc flex-col gap-2.5 pl-5 text-base leading-[1.55]">
             {s.cuenta.map((c) => <li>{c}</li>)}
+            <li>{NOTA_RESULTADOS}</li>
           </ul>
         </div>
       </div>
+      <FormasDePago class="mx-auto mt-5 max-w-[1200px]" />
     </section>
 
-    <!-- FAQ -->
-    <section class="px-6 py-16 md:py-[88px]">
-      <div class="mx-auto flex max-w-[820px] flex-col gap-2">
-        <h2 class="titulo mb-5 text-[clamp(36px,4vw,52px)] leading-[1.05]">Preguntas <em>frecuentes</em></h2>
-        {
-          s.faq.map((f) => (
-            <details class="group rounded-[18px] bg-white px-6 py-5">
-              <summary class="flex min-h-7 cursor-pointer list-none items-center justify-between gap-4 text-[17px] font-bold [&::-webkit-details-marker]:hidden">
-                {f.q}
-                <svg class="shrink-0 transition-transform group-open:rotate-45" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F4A4C" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-                  <path d="M12 5v14M5 12h14" />
-                </svg>
-              </summary>
-              <p class="mt-3 mb-0 text-base leading-relaxed text-gris">{f.a}</p>
-            </details>
-          ))
-        }
-      </div>
-    </section>
+    <Preguntas items={s.faq} />
 
     <!-- Otros tratamientos -->
     <section id="otros" class="scroll-mt-4 bg-white px-6 py-16 md:py-[88px]">
       <div class="mx-auto flex max-w-[1200px] flex-col gap-8">
-        <h2 class="titulo text-[clamp(36px,4vw,52px)] leading-[1.05]">Otros <em>tratamientos</em></h2>
+        <div class="flex flex-wrap items-baseline justify-between gap-3">
+          <h2 class="titulo text-[clamp(30px,4vw,44px)]">Otros <em>tratamientos</em></h2>
+          <a href={URL_OTROS} class="font-semibold">Ver tratamientos complementarios →</a>
+        </div>
         <div class="carrusel revelar grid-cols-[repeat(auto-fit,minmax(240px,1fr))]">
           {
             otros.map((o) => (
               <a
                 href={urlServicio(o.slug)}
-                class="group flex flex-col overflow-hidden rounded-[22px] bg-crema text-tinta no-underline hover:text-tinta"
+                class="group flex flex-col overflow-hidden rounded-[22px] bg-bruma text-petroleo no-underline hover:text-petroleo"
               >
                 <span class="block overflow-hidden" style={{ background: o.tono }}>
                   <Image
                     src={o.foto}
                     alt=""
                     widths={[400, 600, 800]}
-                    sizes="(min-width: 1200px) 384px, 100vw"
+                    sizes="(min-width: 1200px) 384px, 80vw"
                     transition:name={`foto-${o.slug}`}
                     class="block aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </span>
                 <span class="flex items-baseline justify-between gap-3 px-5 py-[18px]">
                   <span class="flex flex-col gap-1">
-                    <span class="text-base font-bold group-hover:text-petroleo">{o.nombre}</span>
-                    <span class="text-[13px] text-gris-2">{o.sesiones}</span>
+                    <span class="text-base font-bold group-hover:text-turquesa">{o.nombre}</span>
+                    <span class="text-[13px] text-texto-3">{o.detallePrecio}</span>
                   </span>
-                  <span class="font-serif text-2xl font-semibold">{o.precio}</span>
+                  <span class="precio text-lg">{o.etiquetaPrecio}</span>
                 </span>
               </a>
             ))
@@ -269,7 +275,7 @@ const navLinks = [
       </div>
     </section>
 
-    <CtaWhatsapp texto="Te decimos qué puedes lograr, cuántas sesiones necesitas y cuánto cuesta.">
+    <CtaWhatsapp servicio={s.enFrase} texto="Te explicamos qué puedes lograr, cuántas sesiones necesitas y cuánto cuesta.">
       Empieza con una valoración <em>gratis</em>
     </CtaWhatsapp>
   </main>

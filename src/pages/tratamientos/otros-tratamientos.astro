@@ -1,0 +1,96 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import CtaWhatsapp from '../../components/CtaWhatsapp.astro';
+import MensajeCentral from '../../components/MensajeCentral.astro';
+import FormasDePago from '../../components/FormasDePago.astro';
+import PestanasTratamientos from '../../components/PestanasTratamientos.astro';
+import { complementarios, URL_OTROS } from '../../data/servicios';
+import { NOTA_RESULTADOS, SITE_URL, precio, waValoracion } from '../../data/site';
+
+const url = new URL(URL_OTROS, SITE_URL).href;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'OfferCatalog',
+    name: 'Otros tratamientos estéticos y spa en Ubaté',
+    url,
+    itemListElement: complementarios.map((c) => ({
+      '@type': 'Offer',
+      priceCurrency: 'COP',
+      price: c.valor,
+      ...(c.desde && {
+        priceSpecification: { '@type': 'PriceSpecification', minPrice: c.valor, priceCurrency: 'COP' },
+      }),
+      itemOffered: {
+        '@type': 'Service',
+        name: c.nombre,
+        provider: { '@id': `${SITE_URL}/#negocio` },
+        areaServed: { '@type': 'City', name: 'Ubaté' },
+      },
+    })),
+  },
+];
+---
+
+<Base
+  title="Otros tratamientos estéticos y spa en Ubaté | Mariyen Centro de Estética"
+  description="Reducción de brazos, cachetes y papada, aumento de masa muscular, planes nutricionales y spa en Ubaté. Precios claros y valoración gratis en Mariyen."
+  jsonLd={jsonLd}
+  mensajeWhatsapp="Hola, quiero agendar mi valoración gratis para uno de los otros tratamientos"
+>
+  <div class="px-4 pt-4 sm:px-6">
+    <Header actual="/#tratamientos" class="max-w-[1200px]" />
+  </div>
+
+  <main>
+    <div class="mx-auto flex max-w-[1200px] flex-col gap-[18px] px-6 pt-7">
+      <nav aria-label="Ruta" class="flex flex-wrap gap-2 text-sm text-texto-3">
+        <a href="/" class="text-texto-3 underline hover:text-turquesa">Inicio</a>
+        <span aria-hidden="true">/</span>
+        <span class="font-semibold text-petroleo" aria-current="page">Otros tratamientos</span>
+      </nav>
+      <PestanasTratamientos actual="otros" />
+    </div>
+
+    <section class="mx-auto flex max-w-[1200px] flex-col gap-5 px-6 pt-8 pb-12">
+      <p class="eyebrow">Tratamientos complementarios · Ubaté</p>
+      <h1 class="titulo text-[clamp(36px,5vw,60px)]">Otros <em>tratamientos</em></h1>
+      <p class="m-0 max-w-[620px] text-lg leading-relaxed text-texto-2">
+        Tratamientos que complementan tu plan o que puedes tomar por separado. En tu valoración gratis te
+        recomendamos los que mejor se ajustan a tu objetivo.
+      </p>
+    </section>
+
+    <MensajeCentral />
+
+    <section class="px-6 py-16 md:py-20">
+      <div class="mx-auto grid max-w-[1200px] gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          complementarios.map((c) => (
+            <article class="revelar flex flex-col gap-3 rounded-3xl bg-white p-6">
+              <h2 class="m-0 font-display text-xl font-semibold">{c.nombre}</h2>
+              {c.detalle && <p class="m-0 text-[15px] text-texto-2">{c.detalle}</p>}
+              <p class="m-0 mt-auto flex items-baseline gap-2 pt-2">
+                {c.desde && <span class="text-sm text-texto-3">Desde</span>}
+                <span class="precio text-2xl text-petroleo">{precio(c.valor)}</span>
+              </p>
+              <a href={waValoracion(c.nombre.toLowerCase().startsWith('plan') ? c.nombre : `tratamiento de ${c.nombre.toLowerCase()}`)} class="btn btn-secundario min-h-11 py-2.5 text-sm">
+                Preguntar por WhatsApp
+              </a>
+            </article>
+          ))
+        }
+      </div>
+      <p class="mx-auto mt-6 mb-0 max-w-[1200px] rounded-2xl bg-agua-claro px-5 py-4 text-[15px]">{NOTA_RESULTADOS}</p>
+      <FormasDePago class="mx-auto mt-5 max-w-[1200px]" />
+    </section>
+
+    <CtaWhatsapp texto="Te ayudamos a elegir el tratamiento que mejor se ajusta a tu objetivo.">
+      ¿No sabes cuál elegir? <em>Te asesoramos gratis</em>
+    </CtaWhatsapp>
+  </main>
+  <Footer />
+</Base>

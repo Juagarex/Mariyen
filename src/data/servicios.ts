@@ -1,30 +1,36 @@
 import type { ImageMetadata } from 'astro';
-import lipo from '../assets/images/lipo.jpg';
+import reduccion from '../assets/images/lipo.jpg';
 import gluteos from '../assets/images/gluteos.jpg';
-import hidrolipo from '../assets/images/hidrolipo.jpg';
 import facial from '../assets/images/facial.jpg';
+import limpieza from '../assets/images/limpieza-facial.jpg';
 import masaje from '../assets/images/masaje.jpg';
 import toalla from '../assets/images/toalla-turquesa.jpg';
 import cabinaVelas from '../assets/images/cabina-velas.jpg';
-import limpiezaFacial from '../assets/images/limpieza-facial.jpg';
+import camilla from '../assets/images/hidrolipo.jpg';
+
+export interface Opcion {
+  nombre: string;
+  valor: number;
+  detalle?: string;
+}
 
 export interface Servicio {
   slug: string;
   nombre: string;
-  nombreCorto: string;
+  /** Nombre en minúscula para usar dentro de frases ("para el plan integral de reducción"). */
+  enFrase: string;
+  destacado: boolean;
   zona: string;
-  t1: string;
-  tItal: string;
+  resumen: string;
   intro: string;
-  precio: string;
-  antes?: string;
-  dcto?: string;
-  sesiones: string;
-  duracion: string;
-  frecuencia: string;
-  tono: string;
+  opciones: Opcion[];
+  /** Texto corto del precio para tarjetas: "Desde $994.000". */
+  etiquetaPrecio: string;
+  detallePrecio: string;
   foto: ImageMetadata;
   fotoAlt: string;
+  tono: string;
+  seo: { title: string; description: string };
   beneficios: { t: string; d: string }[];
   pasos: { n: string; t: string; d: string }[];
   galeria: { src: ImageMetadata; alt: string }[];
@@ -33,186 +39,199 @@ export interface Servicio {
   faq: { q: string; a: string }[];
 }
 
+const pasosBase = (sesiones: string): Servicio['pasos'] => [
+  { n: '01', t: 'Valoración gratis', d: 'Revisamos tu caso y te explicamos qué podemos trabajar y qué es realista para ti.' },
+  { n: '02', t: 'Tu plan', d: `Definimos ${sesiones}, tus horarios y la forma de pago.` },
+  { n: '03', t: 'Sesiones', d: 'Aparatología biomédica y masajes con técnicas brasileñas, sin dolor.' },
+  { n: '04', t: 'Seguimiento', d: 'Revisamos tu avance durante el plan. Si no ves cambios, ajustamos tu plan.' },
+];
+
+const faqBase = [
+  { q: '¿Duele?', a: 'No. Es un tratamiento sin dolor.' },
+  { q: '¿Tengo que usar faja o hacer dieta?', a: 'No. No exigimos faja ni dieta.' },
+  { q: '¿Puedo pagar a cuotas?', a: 'Sí: a cuotas, con Addi o con Sistecrédito. También efectivo y transferencia.' },
+];
+
 export const servicios: Servicio[] = [
   {
-    slug: 'lipo-sin-cirugia',
-    nombre: 'Lipo sin cirugía',
-    nombreCorto: 'Lipo sin cirugía',
+    slug: 'plan-integral-de-reduccion',
+    nombre: 'Plan integral de reducción',
+    enFrase: 'Plan integral de reducción',
+    destacado: true,
     zona: 'Abdomen · cintura · espalda · brazos',
-    t1: 'Menos medidas,',
-    tItal: 'sin quirófano.',
+    resumen: 'Reduce medidas con un plan de 10 a 40 sesiones, sin dolor, sin fajas y sin dietas.',
     intro:
-      'Un plan de 30 sesiones para trabajar la grasa localizada con tecnología no invasiva. Sin incapacidad, sin dieta extrema y sin faja obligatoria.',
-    precio: '$720.000',
-    antes: '$1.800.000',
-    dcto: '−60%',
-    sesiones: '30 sesiones',
-    duracion: '[45 min por sesión]',
-    frecuencia: '[2–3 sesiones por semana]',
-    tono: '#D8CBBE',
-    foto: lipo,
-    fotoAlt: 'Silueta femenina en ropa deportiva clara',
+      'Un plan de sesiones con aparatología biomédica y masajes con técnicas brasileñas para trabajar la grasa localizada. Eliges cuántas sesiones tomar según tu objetivo y lo que acordemos en tu valoración.',
+    opciones: [
+      { nombre: '10 sesiones', valor: 994000 },
+      { nombre: '20 sesiones', valor: 1284000 },
+      { nombre: '30 sesiones', valor: 1574000 },
+      { nombre: '40 sesiones', valor: 1875000 },
+    ],
+    etiquetaPrecio: 'Desde $994.000',
+    detallePrecio: '10 a 40 sesiones',
+    foto: reduccion,
+    fotoAlt: 'Silueta de mujer en ropa deportiva clara mostrando el abdomen',
+    tono: '#DCE8E6',
+    seo: {
+      title: 'Plan integral de reducción sin dolor en Ubaté | Mariyen Centro de Estética',
+      description:
+        'Reduce medidas en Ubaté con aparatología biomédica y masajes brasileños: sin dolor, sin fajas y sin dietas. Planes desde $994.000 y valoración gratis.',
+    },
     beneficios: [
-      { t: 'Sin cirugía ni anestesia', d: 'Sales de la cabina y vuelves a tu rutina el mismo día.' },
-      { t: 'Zonas a tu medida', d: 'En la valoración elegimos las zonas según tu cuerpo y tu objetivo.' },
-      { t: 'Avance que se mide', d: 'Medidas y fotos al inicio, a mitad del plan y al final.' },
-      { t: 'Pago a cuotas', d: 'Financiación del 100% del plan.' },
+      { t: 'Sin dolor', d: 'Aparatología biomédica y masajes con técnicas brasileñas.' },
+      { t: 'Sin fajas ni dietas', d: 'Sigues con tu rutina mientras avanzas en tu plan.' },
+      { t: 'Plan con seguimiento', d: 'Revisamos tu avance y, si no ves cambios, ajustamos tu plan.' },
+      { t: 'Pago a cuotas', d: 'Cuotas, Addi o Sistecrédito.' },
     ],
-    pasos: [
-      { n: '01', t: 'Valoración gratuita', d: 'Tomamos medidas y fotos, y te decimos con honestidad qué es realista.' },
-      { n: '02', t: 'Plan y agenda', d: 'Definimos zonas, número de sesiones y tus horarios.' },
-      { n: '03', t: 'Sesiones', d: '[Describir la sesión: equipo, qué se siente, cuánto dura].' },
-      { n: '04', t: 'Control y cierre', d: 'Comparamos medidas y te dejamos pautas para mantener el resultado.' },
-    ],
+    pasos: pasosBase('el número de sesiones (10, 20, 30 o 40)'),
     galeria: [
-      { src: masaje, alt: 'Masaje en la espalda con luz cálida' },
+      { src: masaje, alt: 'Masaje en la espalda en una camilla con luz cálida' },
       { src: toalla, alt: 'Toalla turquesa y velas en la cabina' },
-      { src: cabinaVelas, alt: 'Toallas enrolladas y velas encendidas' },
+      { src: cabinaVelas, alt: 'Toallas enrolladas y velas encendidas en la cabina' },
     ],
     ideal: [
       'Tienes grasa localizada que no baja con ejercicio',
-      'Quieres resultados sin incapacidad',
-      'Buscas un plan con precio cerrado',
+      'No quieres usar faja ni hacer dieta',
+      'Buscas un plan claro, con precio desde el inicio',
     ],
     cuenta: [
-      'No reemplaza alimentación ni actividad física',
-      '[Contraindicaciones por confirmar con Mariyen]',
-      'Los resultados varían según cada persona',
+      'Te recomendamos acompañar el plan con hábitos saludables',
+      'En la valoración revisamos si el tratamiento es adecuado para ti',
     ],
-    faq: [
-      { q: '¿Duele?', a: '[Respuesta de Mariyen]' },
-      { q: '¿Cuándo empiezo a ver cambios?', a: '[Respuesta de Mariyen: a partir de qué sesión]' },
-      { q: '¿Tengo que usar faja?', a: 'No es obligatoria. [Confirmar recomendación]' },
-    ],
+    faq: faqBase,
   },
   {
-    slug: 'gluteos',
-    nombre: 'Levantamiento de glúteos',
-    nombreCorto: 'Glúteos',
+    slug: 'paquete-integral-de-gluteos',
+    nombre: 'Paquete integral de glúteos',
+    enFrase: 'Paquete integral de glúteos',
+    destacado: true,
     zona: 'Glúteos',
-    t1: 'Más firmeza',
-    tItal: 'y volumen.',
-    intro: 'Programa de 5 sesiones para levantar y dar forma a los glúteos sin cirugía ni rellenos.',
-    precio: '$950.000',
-    antes: '$1.900.000',
-    dcto: '−50%',
-    sesiones: '5 sesiones',
-    duracion: '[60 min por sesión]',
-    frecuencia: '[1 sesión por semana]',
-    tono: '#CBBDB0',
-    foto: gluteos,
-    fotoAlt: 'Mujer entrenando glúteos al aire libre',
-    beneficios: [
-      { t: 'Sin cirugía ni rellenos', d: 'Trabajo no invasivo, sin recuperación.' },
-      { t: 'Solo 5 sesiones', d: 'Un plan corto que cabe en tu agenda.' },
-      { t: 'Forma natural', d: 'Levantamos y tonificamos respetando tu silueta.' },
-      { t: 'Pago a cuotas', d: 'Financiación del 100% del plan.' },
-    ],
-    pasos: [
-      { n: '01', t: 'Valoración gratuita', d: 'Revisamos tu caso y el resultado que buscas.' },
-      { n: '02', t: 'Plan de 5 sesiones', d: 'Agendamos las sesiones y te damos indicaciones previas.' },
-      { n: '03', t: 'Sesiones', d: '[Describir técnica y equipo].' },
-      { n: '04', t: 'Resultado y fotos', d: 'Comparamos antes y después en la última sesión.' },
-    ],
-    galeria: [
-      { src: lipo, alt: 'Silueta femenina en ropa deportiva clara' },
-      { src: masaje, alt: 'Masaje en la espalda con luz cálida' },
-      { src: hidrolipo, alt: 'Toallas enrolladas y aceite sobre la camilla' },
-    ],
-    ideal: ['Quieres levantar sin cirugía', 'Buscas un plan corto', 'Prefieres un resultado natural'],
-    cuenta: [
-      'Complementar con ejercicio mejora el resultado',
-      '[Contraindicaciones por confirmar]',
-      'Los resultados varían según cada persona',
-    ],
-    faq: [
-      { q: '¿Cuánto dura el efecto?', a: '[Respuesta de Mariyen]' },
-      { q: '¿Puedo entrenar en esos días?', a: '[Respuesta de Mariyen]' },
-      { q: '¿Se puede combinar con lipo sin cirugía?', a: '[Respuesta de Mariyen]' },
-    ],
-  },
-  {
-    slug: 'hidrolipoclasia',
-    nombre: 'Hidrolipoclasia',
-    nombreCorto: 'Hidrolipoclasia',
-    zona: 'Abdomen · cintura · flancos',
-    t1: 'Grasa localizada,',
-    tItal: 'trabajada a fondo.',
+    resumen: 'Diez sesiones para trabajar firmeza y forma, sin dolor y sin cirugía.',
     intro:
-      'Tratamiento para zonas puntuales, complementado con faja térmica para reducir y tonificar abdomen y cintura.',
-    precio: '[Precio]',
-    sesiones: '[N sesiones]',
-    duracion: '[Duración por sesión]',
-    frecuencia: '[Frecuencia]',
-    tono: '#D3D9D4',
-    foto: hidrolipo,
-    fotoAlt: 'Toallas enrolladas y aceite sobre la camilla',
+      'Un paquete de 10 sesiones con aparatología biomédica y masajes con técnicas brasileñas para trabajar la firmeza y la forma de los glúteos, sin cirugía y sin rellenos.',
+    opciones: [{ nombre: '10 sesiones', valor: 894000 }],
+    etiquetaPrecio: '$894.000',
+    detallePrecio: '10 sesiones',
+    foto: gluteos,
+    fotoAlt: 'Mujer en ropa deportiva haciendo estiramiento al aire libre',
+    tono: '#D5E3E1',
+    seo: {
+      title: 'Paquete integral de glúteos en Ubaté | Mariyen Centro de Estética',
+      description:
+        'Paquete integral de glúteos en Ubaté: 10 sesiones por $894.000, sin dolor y sin cirugía. Pago a cuotas, Addi o Sistecrédito. Valoración gratis.',
+    },
     beneficios: [
-      { t: 'Enfocado en zonas', d: 'Ideal para abdomen y cintura.' },
-      { t: 'Faja térmica incluida', d: '[Confirmar si la promoción sigue vigente].' },
-      { t: 'Seguimiento', d: 'Medidas en cada control.' },
-      { t: 'Pago a cuotas', d: 'Financiación disponible.' },
+      { t: 'Sin cirugía ni rellenos', d: 'Tratamiento no invasivo, sin incapacidad.' },
+      { t: '10 sesiones', d: 'Un paquete claro, con precio cerrado.' },
+      { t: 'Plan con seguimiento', d: 'Revisamos tu avance y, si no ves cambios, ajustamos tu plan.' },
+      { t: 'Pago a cuotas', d: 'Cuotas, Addi o Sistecrédito.' },
     ],
-    pasos: [
-      { n: '01', t: 'Valoración', d: 'Definimos si eres candidata y las zonas a tratar.' },
-      { n: '02', t: 'Preparación', d: '[Indicaciones previas].' },
-      { n: '03', t: 'Sesiones', d: '[Describir procedimiento].' },
-      { n: '04', t: 'Cuidados', d: 'Faja térmica y pautas en casa.' },
-    ],
+    pasos: pasosBase('tus 10 sesiones'),
     galeria: [
-      { src: toalla, alt: 'Toalla turquesa y velas en la cabina' },
+      { src: reduccion, alt: 'Silueta de mujer en ropa deportiva clara' },
       { src: masaje, alt: 'Masaje en la espalda con luz cálida' },
-      { src: cabinaVelas, alt: 'Toallas enrolladas y velas encendidas' },
+      { src: camilla, alt: 'Toallas enrolladas y aceite sobre la camilla' },
     ],
-    ideal: ['Tienes grasa en una zona puntual', 'Buscas complementar otro plan'],
-    cuenta: ['[Requisitos y contraindicaciones por confirmar]', 'Los resultados varían según cada persona'],
-    faq: [
-      { q: '¿Qué es la hidrolipoclasia?', a: '[Explicación corta en palabras de Mariyen]' },
-      { q: '¿Cuántas sesiones necesito?', a: '[Respuesta]' },
-      { q: '¿Cuánto cuesta?', a: '[Precio y opciones de pago]' },
+    ideal: ['Quieres trabajar firmeza sin cirugía', 'Buscas un paquete corto y con precio cerrado'],
+    cuenta: [
+      'El ejercicio complementa muy bien el paquete',
+      'En la valoración revisamos si el tratamiento es adecuado para ti',
     ],
+    faq: faqBase,
   },
   {
     slug: 'armonizacion-facial',
     nombre: 'Armonización facial',
-    nombreCorto: 'Armonización facial',
-    zona: 'Rostro · mandíbula · mejillas',
-    t1: 'Un rostro más',
-    tItal: 'definido.',
+    enFrase: 'tratamiento de armonización facial',
+    destacado: false,
+    zona: 'Rostro · contorno · mejillas',
+    resumen: 'Un tratamiento para armonizar el rostro que se repite cada 6 meses.',
     intro:
-      'Tratamientos faciales no invasivos para definir y armonizar el rostro (efecto bichectomía) sin cirugía.',
-    precio: '[Precio]',
-    sesiones: '[N sesiones]',
-    duracion: '[Duración]',
-    frecuencia: '[Frecuencia]',
-    tono: '#E2D3C8',
+      'Un tratamiento facial para armonizar y definir el contorno del rostro. Se realiza cada 6 meses y en tu valoración revisamos qué zonas trabajar.',
+    opciones: [{ nombre: 'Cada 6 meses', valor: 452000 }],
+    etiquetaPrecio: '$452.000',
+    detallePrecio: 'cada 6 meses',
     foto: facial,
     fotoAlt: 'Paciente con mascarilla durante un tratamiento facial',
+    tono: '#E3ECEA',
+    seo: {
+      title: 'Armonización facial en Ubaté | Mariyen Centro de Estética',
+      description:
+        'Armonización facial en Ubaté por $452.000 cada 6 meses. Más de 10 años de experiencia y habilitación sanitaria al día. Agenda tu valoración gratis.',
+    },
     beneficios: [
-      { t: 'Sin agujas ni cirugía', d: '[Confirmar técnica].' },
-      { t: 'Rostro definido', d: 'Trabajo sobre mejillas y contorno.' },
-      { t: 'Sesiones cortas', d: 'Vuelves a tu día sin marcas.' },
-      { t: 'Plan a tu medida', d: 'Lo definimos en la valoración.' },
+      { t: 'Contorno definido', d: 'Trabajamos el rostro según lo que acordemos en tu valoración.' },
+      { t: 'Cada 6 meses', d: 'Un tratamiento que se repite dos veces al año.' },
+      { t: 'Atención personalizada', d: 'Te atiende la misma profesional en cada cita.' },
+      { t: 'Pago a cuotas', d: 'Cuotas, Addi o Sistecrédito.' },
     ],
-    pasos: [
-      { n: '01', t: 'Valoración', d: 'Analizamos tu rostro y lo que quieres resaltar.' },
-      { n: '02', t: 'Plan', d: 'Número de sesiones y cuidados.' },
-      { n: '03', t: 'Sesiones', d: '[Describir procedimiento].' },
-      { n: '04', t: 'Resultado', d: 'Fotos comparativas con la misma luz.' },
-    ],
+    pasos: pasosBase('las zonas a trabajar'),
     galeria: [
-      { src: limpiezaFacial, alt: 'Limpieza facial profesional' },
+      { src: limpieza, alt: 'Limpieza facial profesional en cabina' },
       { src: toalla, alt: 'Toalla turquesa y velas en la cabina' },
       { src: cabinaVelas, alt: 'Toallas enrolladas y velas encendidas' },
     ],
-    ideal: ['Quieres definir el contorno del rostro', 'Prefieres algo no invasivo'],
-    cuenta: ['[Contraindicaciones por confirmar]', 'Los resultados varían según cada persona'],
-    faq: [
-      { q: '¿Qué tratamientos faciales hacen?', a: '[Lista de Mariyen]' },
-      { q: '¿Deja marcas?', a: '[Respuesta]' },
-      { q: '¿Cuánto cuesta?', a: '[Precio]' },
+    ideal: ['Quieres definir el contorno del rostro', 'Prefieres un tratamiento sin cirugía'],
+    cuenta: ['En la valoración revisamos si el tratamiento es adecuado para ti'],
+    faq: [faqBase[0], faqBase[2]],
+  },
+  {
+    slug: 'limpieza-facial',
+    nombre: 'Limpieza facial',
+    enFrase: 'servicio de limpieza facial',
+    destacado: false,
+    zona: 'Rostro',
+    resumen: 'Limpieza facial profunda para una piel más fresca y cuidada.',
+    intro: 'Una limpieza facial profesional para retirar impurezas y dejar tu piel fresca y cuidada.',
+    opciones: [{ nombre: 'Sesión', valor: 147000 }],
+    etiquetaPrecio: '$147.000',
+    detallePrecio: 'por sesión',
+    foto: limpieza,
+    fotoAlt: 'Limpieza facial profesional en cabina',
+    tono: '#DDF3F1',
+    seo: {
+      title: 'Limpieza facial en Ubaté | Mariyen Centro de Estética',
+      description:
+        'Limpieza facial profesional en Ubaté por $147.000. Lunes a sábado de 8:00 a. m. a 5:00 p. m. Escríbenos por WhatsApp y agenda tu cita.',
+    },
+    beneficios: [
+      { t: 'Piel limpia y fresca', d: 'Retiramos impurezas con técnicas profesionales.' },
+      { t: 'Sesión única', d: 'Una cita y vuelves a tu día.' },
+      { t: 'Productos profesionales', d: 'Trabajamos con laboratorios reconocidos.' },
+      { t: 'Varias formas de pago', d: 'Efectivo, transferencia, Addi o Sistecrédito.' },
     ],
+    pasos: pasosBase('el día y la hora de tu sesión'),
+    galeria: [
+      { src: facial, alt: 'Paciente con mascarilla durante un tratamiento facial' },
+      { src: toalla, alt: 'Toalla turquesa y velas en la cabina' },
+      { src: camilla, alt: 'Toallas enrolladas sobre la camilla' },
+    ],
+    ideal: ['Quieres cuidar tu piel con una limpieza profesional', 'Buscas un servicio corto, de una sola cita'],
+    cuenta: ['Te damos recomendaciones de cuidado para los días siguientes'],
+    faq: [faqBase[0], faqBase[2]],
   },
 ];
 
+export const destacados = servicios.filter((s) => s.destacado);
+
+export interface Complementario {
+  nombre: string;
+  valor: number;
+  desde?: boolean;
+  detalle?: string;
+}
+
+/** Tratamientos complementarios (página "Otros tratamientos" y sección en inicio). */
+export const complementarios: Complementario[] = [
+  { nombre: 'Aumento de masa muscular', valor: 352000, detalle: 'Sesión única' },
+  { nombre: 'Reducción de peso y medidas', valor: 297000, detalle: '1 mes, sin dieta ni faja' },
+  { nombre: 'Reducción de cachetes y papada', valor: 217500 },
+  { nombre: 'Reducción de brazos', valor: 192000 },
+  { nombre: 'Plan nutricional', valor: 99000, desde: true },
+  { nombre: 'Plan de control de peso y dieta', valor: 99000, desde: true },
+  { nombre: 'Spa y relajación', valor: 60000, desde: true },
+];
+
 export const urlServicio = (slug: string) => `/tratamientos/${slug}`;
+export const URL_OTROS = '/tratamientos/otros-tratamientos';

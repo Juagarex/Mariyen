@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { servicios, urlServicio } from '../data/servicios';
+import { destacados, urlServicio } from '../data/servicios';
 
 interface Props {
   class?: string;
@@ -8,47 +8,43 @@ interface Props {
 }
 
 const { class: clase = '', style } = Astro.props;
-const [lipo, gluteos] = servicios;
 ---
 
 <div
   style={style}
   class:list={[
-    'box-border w-full flex-col gap-1 rounded-3xl bg-white p-[22px] shadow-[0_16px_40px_rgba(31,42,43,0.14)]',
+    'box-border w-full flex-col gap-1 rounded-3xl bg-white p-[22px] shadow-[0_16px_40px_rgba(15,62,66,0.14)]',
     clase,
   ]}
 >
-  <div class="flex items-baseline justify-between border-b border-lino pb-2.5">
-    <span class="font-serif text-2xl font-semibold">Planes del mes</span>
-    <span class="text-xs text-gris-2">[Mes]</span>
-  </div>
+  <p class="m-0 flex items-baseline justify-between border-b border-niebla pb-2.5">
+    <span class="font-display text-lg font-semibold">Planes que más recomendamos</span>
+  </p>
   {
-    [lipo, gluteos].map((s) => (
+    destacados.map((s) => (
       <a
         href={urlServicio(s.slug)}
-        class="flex items-center gap-3 border-b border-lino py-3 text-tinta no-underline hover:text-petroleo"
+        class="flex items-center gap-3 border-b border-niebla py-3 text-petroleo no-underline hover:text-turquesa"
       >
         <Image src={s.foto} alt="" width={88} height={88} class="size-11 shrink-0 rounded-xl object-cover" />
         <span class="flex flex-1 flex-col">
           <span class="text-sm font-bold">{s.nombre}</span>
-          <span class="text-xs text-gris-2">
-            {s.sesiones} · {s.dcto}
-          </span>
+          <span class="text-xs text-texto-3">{s.detallePrecio}</span>
         </span>
-        <span class="text-sm font-bold">{s.precio}</span>
+        <span class="precio text-sm">{s.etiquetaPrecio}</span>
       </a>
     ))
   }
   <div class="flex items-center gap-3 pt-3 pb-0.5">
-    <span class="flex size-11 shrink-0 items-center justify-center rounded-xl bg-menta">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1F4A4C" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+    <span class="flex size-11 shrink-0 items-center justify-center rounded-xl bg-rubor">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7A3B2C" stroke-width="2" stroke-linecap="round" aria-hidden="true">
         <path d="M20 6 9 17l-5-5"></path>
       </svg>
     </span>
     <span class="flex flex-1 flex-col">
       <span class="text-sm font-bold">Valoración</span>
-      <span class="text-xs text-gris-2">Con Mariyen, sin compromiso</span>
+      <span class="text-xs text-texto-3">Sin costo y sin compromiso</span>
     </span>
-    <span class="text-sm font-bold">$0</span>
+    <span class="rounded-full bg-rubor px-3 py-1 text-xs font-bold text-rubor-texto">Gratis</span>
   </div>
 </div>

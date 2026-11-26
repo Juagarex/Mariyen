@@ -1,0 +1,110 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CtaWhatsapp from '../components/CtaWhatsapp.astro';
+import FormasDePago from '../components/FormasDePago.astro';
+import { NEGOCIO, PROFESIONAL, SITE_URL } from '../data/site';
+import toalla from '../assets/images/toalla-turquesa.jpg';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    name: 'Sobre Mariyen',
+    url: new URL('/sobre-mariyen', SITE_URL).href,
+    about: { '@id': `${SITE_URL}/#negocio` },
+  },
+];
+
+const valores = [
+  { t: 'Honesta', d: 'Te decimos con claridad qué podemos trabajar y qué es realista para ti.' },
+  { t: 'Profesional', d: 'Formación continua y habilitación sanitaria al día.' },
+  { t: 'Exigente con los resultados', d: 'Plan con seguimiento: si no ves cambios, ajustamos tu plan.' },
+];
+---
+
+<Base
+  title="Sobre Mariyen | Más de 10 años en estética en Ubaté"
+  description="Conoce a Mariyen: más de 10 años de experiencia, formación en Nogal, CIFES y laboratorios reconocidos, y habilitación sanitaria al día en Ubaté."
+  jsonLd={jsonLd}
+>
+  <div class="px-4 pt-4 sm:px-6">
+    <Header actual="/sobre-mariyen" class="max-w-[1200px]" />
+  </div>
+
+  <main>
+    <section class="mx-auto grid max-w-[1200px] items-center gap-12 px-6 pt-12 pb-16 md:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] md:pt-16">
+      <div class="flex flex-col gap-5">
+        <p class="eyebrow">{NEGOCIO.experiencia} · Ubaté</p>
+        <h1 class="titulo text-[clamp(36px,5vw,60px)]">Sobre <em>Mariyen</em></h1>
+        <!-- TODO(cliente): confirmar nombre personal y título profesional exacto (no usar "médica" ni "medicina estética"). -->
+        <p class="m-0 text-xl font-semibold">
+          {PROFESIONAL.nombre} · <span class="text-texto-2">{PROFESIONAL.titulo}</span>
+        </p>
+        <p class="m-0 text-[17px] leading-[1.7] text-texto-2">
+          En {NEGOCIO.nombre} llevamos {NEGOCIO.experiencia.toLowerCase()} acompañando a mujeres de Ubaté y su
+          provincia. Nuestras clientas nos describen como honestas, profesionales y exigentes con los resultados.
+        </p>
+        <p class="m-0 text-[17px] leading-[1.7] text-texto-2">
+          Trabajamos con aparatología biomédica y masajes con técnicas brasileñas: sin dolor, sin fajas y sin
+          dietas. {NEGOCIO.habilitacion}.
+        </p>
+      </div>
+      <!-- TODO(cliente): foto de la profesional en proporción 4:5 (reemplazar este espacio por <Image>). -->
+      <div
+        role="img"
+        aria-label={`Foto de ${PROFESIONAL.nombre}, profesional de ${NEGOCIO.nombre} en su consultorio de Ubaté`}
+        class="flex aspect-[4/5] w-full items-end justify-center rounded-[28px] bg-niebla p-6 text-center text-sm text-texto-3"
+      >
+        Foto de la profesional (pendiente)
+      </div>
+    </section>
+
+    <section class="bg-white px-6 py-16 md:py-24">
+      <div class="mx-auto grid max-w-[1200px] items-start gap-10 md:grid-cols-2">
+        <div class="flex flex-col gap-5">
+          <h2 class="titulo text-[clamp(28px,3.6vw,44px)]">Formación</h2>
+          <ul class="m-0 flex list-none flex-col gap-2 p-0">
+            {
+              PROFESIONAL.formacion.map((f) => (
+                <li class="flex items-center gap-3 rounded-2xl bg-bruma px-5 py-4 font-semibold">
+                  <span class="size-2.5 shrink-0 rounded-full bg-agua" aria-hidden="true" />
+                  {f}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <Image
+          src={toalla}
+          alt="Detalle de la cabina con toalla turquesa y velas encendidas"
+          widths={[600, 900, 1200]}
+          sizes="(min-width: 1200px) 576px, 100vw"
+          class="block aspect-[4/3] w-full rounded-[28px] object-cover"
+        />
+      </div>
+    </section>
+
+    <section class="px-6 py-16 md:py-24">
+      <div class="mx-auto flex max-w-[1200px] flex-col gap-10">
+        <h2 class="titulo text-[clamp(28px,3.6vw,44px)]">Así nos <em>describen</em></h2>
+        <ul class="m-0 grid list-none gap-4 p-0 md:grid-cols-3">
+          {
+            valores.map((v) => (
+              <li class="revelar flex flex-col gap-2 rounded-3xl bg-white p-6">
+                <h3 class="m-0 font-display text-lg font-semibold">{v.t}</h3>
+                <p class="m-0 text-[15px] leading-relaxed text-texto-2">{v.d}</p>
+              </li>
+            ))
+          }
+        </ul>
+        <FormasDePago />
+      </div>
+    </section>
+
+    <CtaWhatsapp>Conócenos en tu <em>valoración gratis</em></CtaWhatsapp>
+  </main>
+  <Footer />
+</Base>

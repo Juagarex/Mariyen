@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# TODO(cliente): cambiar por el dominio propio cuando exista.
+Sitemap: https://mariyen.vercel.app/sitemap-index.xml

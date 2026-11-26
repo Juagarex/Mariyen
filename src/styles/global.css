@@ -1,34 +1,26 @@
 @import "tailwindcss";
 
+/* Identidad Mariyen — Propuesta 1 (aprobada por la clienta) */
 @theme {
   --font-sans: "Manrope", system-ui, sans-serif;
-  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-display: "Sora", "Manrope", system-ui, sans-serif;
 
-  /* Paleta Mariyen */
-  --color-crema: #F5F1EC;
-  --color-arena: #DCCFC2;
-  --color-arena-2: #D8CBBE;
-  --color-arena-3: #CBBDB0;
-  --color-arena-4: #E2D3C8;
-  --color-salvia: #D3D9D4;
-  --color-menta: #E3EEEC;
-  --color-rosa: #F3E6DF;
-  --color-lino: #ECE6DF;
-  --color-linea: #CFC6BC;
-  --color-linea-2: #D9D0C6;
-  --color-linea-3: #D6CEC5;
+  /* Paleta principal */
+  --color-petroleo: #0F3E42; /* texto principal y fondos oscuros */
+  --color-turquesa: #0F6B6E; /* botones y enlaces */
+  --color-agua: #9BE0DB; /* acentos y detalles */
+  --color-rubor: #F6DDD5; /* SOLO ofertas y promociones */
+  --color-bruma: #F4F7F6; /* fondo general */
 
-  --color-tinta: #1F2A2B;
-  --color-tinta-2: #2F3838;
-  --color-tinta-3: #3C4545;
-  --color-gris: #46504F;
-  --color-gris-2: #5B6667;
-  --color-gris-3: #9AA3A3;
-
-  --color-petroleo: #1F4A4C;
-  --color-petroleo-oscuro: #163739;
-  --color-petroleo-claro: #DCE8E6;
-  --color-terracota: #8A3E2B;
+  /* Derivados (mismos tonos, para estados y superficies) */
+  --color-turquesa-oscuro: #0B5457; /* hover de botones */
+  --color-rubor-texto: #7A3B2C; /* texto sobre rubor (AA) */
+  --color-agua-claro: #DDF3F1;
+  --color-niebla: #E3ECEA; /* superficies suaves */
+  --color-niebla-2: #D5E3E1;
+  --color-linea: #CFDCDA;
+  --color-texto-2: #2E5458; /* texto secundario (AA sobre bruma y blanco) */
+  --color-texto-3: #4A6669; /* texto de apoyo (AA sobre bruma y blanco) */
 }
 
 @layer base {
@@ -36,39 +28,42 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-crema font-sans text-tinta antialiased;
+    @apply bg-bruma font-sans text-petroleo antialiased;
   }
   a {
-    @apply text-petroleo hover:text-petroleo-oscuro;
+    @apply text-turquesa hover:text-turquesa-oscuro;
   }
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-petroleo;
+    @apply outline-2 outline-offset-2 outline-turquesa;
   }
 }
 
 @layer components {
   .titulo {
-    @apply m-0 font-serif font-medium leading-[1.02];
+    @apply m-0 font-display font-semibold leading-[1.1] tracking-[-0.02em] text-petroleo;
   }
   .titulo em {
-    @apply italic text-petroleo;
+    @apply not-italic text-turquesa;
   }
   .btn {
-    @apply inline-flex min-h-[50px] items-center gap-2.5 rounded-full px-[26px] py-[15px] text-base font-semibold no-underline transition-colors;
+    @apply inline-flex min-h-12 items-center justify-center gap-2.5 rounded-full px-6 py-3 text-base font-semibold no-underline transition-colors;
   }
   /* Usar junto a .btn: class="btn btn-primario" */
   .btn-primario {
-    @apply bg-petroleo text-white hover:bg-petroleo-oscuro hover:text-white;
+    @apply bg-turquesa text-white hover:bg-turquesa-oscuro hover:text-white;
   }
   .btn-secundario {
-    @apply bg-white text-tinta hover:bg-lino hover:text-tinta;
+    @apply bg-white text-petroleo ring-1 ring-linea hover:bg-niebla hover:text-petroleo;
   }
   .eyebrow {
-    @apply m-0 flex items-center gap-2.5 text-[13px] text-gris-2;
+    @apply m-0 flex items-center gap-2.5 text-[13px] font-medium text-texto-3;
   }
   .eyebrow::before {
     content: "";
-    @apply h-px w-7 bg-gris-3;
+    @apply h-0.5 w-7 rounded-full bg-agua;
+  }
+  .precio {
+    @apply whitespace-nowrap font-display font-semibold;
   }
 
   /* Carrusel deslizable en celular; en pantallas ≥640px vuelve a ser grilla

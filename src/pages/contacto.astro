@@ -1,0 +1,79 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Flecha from '../components/Flecha.astro';
+import FormasDePago from '../components/FormasDePago.astro';
+import { NEGOCIO, MAPA, SITE_URL, waValoracion } from '../data/site';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    name: 'Contacto',
+    url: new URL('/contacto', SITE_URL).href,
+    about: { '@id': `${SITE_URL}/#negocio` },
+  },
+];
+
+const datos = [
+  { t: 'Dirección', v: NEGOCIO.direccion.completa },
+  { t: 'Horario', v: NEGOCIO.horario.texto },
+  { t: 'WhatsApp', v: NEGOCIO.telefono.visible, href: waValoracion() },
+  { t: 'Instagram', v: NEGOCIO.instagram.usuario, href: NEGOCIO.instagram.url },
+];
+---
+
+<Base
+  title="Contacto y cómo llegar en Ubaté | Mariyen Centro de Estética"
+  description="Visítanos en la Calle 10 # 7-20, consultorios 303 a 305, Ubaté. Lunes a sábado de 8:00 a. m. a 5:00 p. m. Agenda tu valoración gratis por WhatsApp."
+  jsonLd={jsonLd}
+>
+  <div class="px-4 pt-4 sm:px-6">
+    <Header actual="/contacto" class="max-w-[1200px]" />
+  </div>
+
+  <main>
+    <section class="mx-auto flex max-w-[1200px] flex-col gap-5 px-6 pt-12 pb-10 md:pt-16">
+      <p class="eyebrow">Ubaté, Cundinamarca</p>
+      <h1 class="titulo text-[clamp(36px,5vw,60px)]">Contacto y <em>cómo llegar</em></h1>
+      <p class="m-0 max-w-[620px] text-lg leading-relaxed text-texto-2">
+        Escríbenos por WhatsApp para agendar tu valoración gratis o visítanos en nuestros consultorios.
+      </p>
+    </section>
+
+    <section class="px-6 pb-16 md:pb-24">
+      <div class="mx-auto grid max-w-[1200px] items-start gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+        <div class="flex flex-col gap-5">
+          <dl class="m-0 flex flex-col gap-2.5">
+            {
+              datos.map((d) => (
+                <div class="flex flex-col gap-1 rounded-[18px] bg-white px-[22px] py-4">
+                  <dt class="font-display font-semibold">{d.t}</dt>
+                  <dd class="m-0 text-[15px] text-texto-2">{d.href ? <a href={d.href}>{d.v}</a> : d.v}</dd>
+                </div>
+              ))
+            }
+          </dl>
+          <div class="flex flex-wrap gap-3">
+            <a href={waValoracion()} class="btn btn-primario">Agendar por WhatsApp <Flecha /></a>
+            <a href={MAPA.comoLlegar} class="btn btn-secundario">Cómo llegar</a>
+          </div>
+        </div>
+        <div class="overflow-hidden rounded-[28px] bg-niebla">
+          <iframe
+            src={MAPA.embed}
+            title={`Mapa de ${NEGOCIO.nombre}, ${NEGOCIO.direccion.completa}`}
+            width="800"
+            height="520"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            class="block aspect-[4/3] h-auto w-full border-0 lg:aspect-auto lg:h-[520px]"
+            allowfullscreen></iframe>
+        </div>
+      </div>
+      <FormasDePago class="mx-auto mt-8 max-w-[1200px]" />
+    </section>
+  </main>
+  <Footer />
+</Base>

@@ -6,65 +6,61 @@ import Footer from '../components/Footer.astro';
 import CtaWhatsapp from '../components/CtaWhatsapp.astro';
 import Flecha from '../components/Flecha.astro';
 import TituloAnimado from '../components/TituloAnimado.astro';
-import { servicios, urlServicio } from '../data/servicios';
-import { WHATSAPP_URL, WHATSAPP_TEXTO } from '../data/sitio';
-
 import PlanesDelMes from '../components/PlanesDelMes.astro';
+import Preguntas from '../components/Preguntas.astro';
+import FormasDePago from '../components/FormasDePago.astro';
+import { servicios, destacados, complementarios, urlServicio, URL_OTROS } from '../data/servicios';
+import { NEGOCIO, MENSAJE, FAQ_GENERAL, RESULTADOS, TESTIMONIOS, MAPA, precio, waValoracion } from '../data/site';
 
-// Foto del hero (Unsplash, Aiony Haust). Alternativas guardadas: hero-bienestar.jpg y hero.jpg.
+// Foto del hero (Unsplash, Aiony Haust). TODO(cliente): reemplazar por una foto real de la cabina o de la profesional.
 import hero from '../assets/images/hero-retrato.jpg';
 import cabinaVelas from '../assets/images/cabina-velas.jpg';
-import toalla from '../assets/images/toalla-turquesa.jpg';
 import masaje from '../assets/images/masaje.jpg';
 
-const [lipo] = servicios;
+const otrosPrincipales = servicios.filter((s) => !s.destacado);
 
-const navLinks = [
-  { href: '#tratamientos', label: 'Tratamientos' },
-  { href: '#resultados', label: 'Resultados' },
-  { href: '#nosotros', label: 'Nosotros' },
-  { href: '#sede', label: 'Sede' },
+const razones = [
+  { t: 'Aparatología biomédica', d: 'Equipos especializados para trabajar cada zona con precisión.' },
+  { t: 'Técnicas brasileñas', d: 'Masajes que complementan la aparatología en cada sesión.' },
+  { t: 'Sin dolor, sin fajas, sin dietas', d: 'Sigues con tu rutina mientras avanzas en tu plan.' },
+  { t: 'Más de 10 años', d: 'Experiencia y habilitación sanitaria al día.' },
 ];
 
 const pasos = [
-  { n: '01', t: 'Escríbenos', d: 'Por WhatsApp eliges día y hora para tu valoración.' },
-  { n: '02', t: 'Valoración gratis', d: 'Medidas, fotos y un plan con número de sesiones y precio.' },
-  { n: '03', t: 'Sesiones y control', d: 'Medimos tu avance a mitad y al final del plan.' },
+  { n: '01', t: 'Escríbenos', d: 'Por WhatsApp eliges el día y la hora de tu valoración.' },
+  { n: '02', t: 'Valoración gratis', d: 'Revisamos tu caso y te damos un plan con número de sesiones y precio.' },
+  { n: '03', t: 'Sesiones y seguimiento', d: 'Revisamos tu avance. Si no ves cambios, ajustamos tu plan.' },
 ];
 
-const resultados = [
-  { zona: 'Abdomen', detalle: '[N] sesiones · [−X cm]', tono: 'bg-arena-2' },
-  { zona: 'Glúteos', detalle: '5 sesiones', tono: 'bg-arena-3' },
-  { zona: 'Rostro', detalle: '[N] sesiones', tono: 'bg-arena-4' },
-];
-
-const sede = [
-  { t: 'Dirección', v: 'Carrera 6 # 5-51 [confirmar]' },
-  { t: 'Horario', v: '[Lunes a sábado, 00:00–00:00]' },
-];
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQ_GENERAL.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
 ---
 
 <Base
-  title="Mariyen Centro de Estética · Zipaquirá"
-  description="Tratamientos no invasivos para moldear, reducir medidas y definir en Zipaquirá. Valoración gratis con Mariyen Forero."
+  title="Estética sin dolor ni fajas en Ubaté | Mariyen Centro de Estética"
+  description="Centro de estética en Ubaté: aparatología biomédica y masajes brasileños sin dolor, sin fajas y sin dietas. Más de 10 años de experiencia y valoración gratis."
+  jsonLd={[faqJsonLd]}
 >
   <main>
     <!-- Hero -->
     <section class="p-4">
       <div
-        class="intro-marco relative flex min-h-[calc(100svh-2rem)] flex-col overflow-hidden rounded-[32px] bg-arena md:min-h-[max(760px,calc(100svh-2rem))] md:bg-[#F3F0EC]"
+        class="intro-marco relative flex min-h-[calc(100svh-2rem)] flex-col overflow-hidden rounded-[32px] bg-niebla md:min-h-[max(760px,calc(100svh-2rem))] md:bg-bruma"
       >
         <!-- En escritorio la foto (vertical) ocupa el 60 % derecho para no ampliarse de más -->
         <div
           class="intro-zoom absolute inset-0 md:left-[50%] md:[mask-image:linear-gradient(90deg,transparent,black_30%)] lg:left-[40%]"
         >
-          <!--
-            Foto vertical (2:3). En escritorio ocupa el 60 % derecho del hero (60vw en sizes),
-            centrada en el rostro; en celular se pinta ~1,6 veces el ancho de pantalla (160vw).
-          -->
           <Image
             src={hero}
-            alt="Mujer serena apoyada en una mesa blanca, con luz suave"
+            alt="Mujer con los ojos cerrados y expresión serena, apoyada en una mesa blanca con luz suave"
             class="parallax-hero absolute inset-0 h-full w-full object-cover object-[center_30%]"
             loading="eager"
             fetchpriority="high"
@@ -74,150 +70,177 @@ const sede = [
         </div>
         <div
           aria-hidden="true"
-          class="absolute inset-0 bg-[linear-gradient(180deg,rgba(245,241,236,0.9)_0%,rgba(245,241,236,0.78)_55%,rgba(245,241,236,0.25)_100%)] md:bg-[linear-gradient(90deg,rgba(243,240,236,1)_0%,rgba(243,240,236,1)_40%,rgba(243,240,236,0.7)_50%,rgba(243,240,236,0.15)_64%,rgba(243,240,236,0)_76%)]"
+          class="absolute inset-0 bg-[linear-gradient(180deg,rgba(244,247,246,0.94)_0%,rgba(244,247,246,0.86)_60%,rgba(244,247,246,0.35)_100%)] md:bg-[linear-gradient(90deg,rgba(244,247,246,1)_0%,rgba(244,247,246,1)_40%,rgba(244,247,246,0.7)_50%,rgba(244,247,246,0.15)_64%,rgba(244,247,246,0)_76%)]"
         >
         </div>
         <div class="intro-bajar relative z-10 px-4 pt-4">
-          <Header links={navLinks} class="max-w-[1180px]" />
+          <Header class="max-w-[1180px]" />
         </div>
         <div
           class="relative mx-auto box-border flex w-full max-w-[1180px] flex-1 flex-wrap items-end justify-between gap-8 px-6 pt-12 pb-8 md:pt-[72px] md:pb-10"
         >
-          <div class="flex max-w-[560px] flex-col gap-[22px]">
-            <p class="intro-subir eyebrow text-tinta-3 before:bg-tinta-3" style="--d: 0.45s">
-              Estética corporal y facial en Zipaquirá
+          <div class="flex max-w-[600px] flex-col gap-[22px]">
+            <p class="intro-subir eyebrow text-texto-2" style="--d: 0.45s">
+              Centro de estética en Ubaté, Cundinamarca
             </p>
             <TituloAnimado
-              class="titulo text-[clamp(48px,6vw,84px)] leading-[0.98] tracking-[-0.01em]"
-              partes={[{ texto: 'Manos expertas,' }, { texto: 'resultados', em: true }, { texto: 'que se notan.' }]}
+              class="titulo text-[clamp(32px,4.4vw,58px)]"
+              partes={[{ texto: MENSAJE.inicio }, { texto: MENSAJE.cierre, em: true }]}
             />
-            <p class="intro-subir m-0 max-w-[470px] text-lg leading-relaxed text-tinta-2" style="--d: 0.95s">
-              Tratamientos no invasivos para moldear, reducir medidas y definir, con un plan claro de sesiones y
-              precio desde tu primera visita.
+            <p class="intro-subir m-0 max-w-[500px] text-lg leading-relaxed text-texto-2" style="--d: 1.1s">
+              {NEGOCIO.experiencia}, habilitación sanitaria al día y valoración gratis. Pagas en efectivo, por
+              transferencia, a cuotas, con Addi o con Sistecrédito.
             </p>
-            <div class="intro-subir flex flex-wrap gap-3" style="--d: 1.08s">
-              <a href={WHATSAPP_URL} class="btn btn-primario">Valoración gratis <Flecha /></a>
+            <div class="intro-subir flex flex-wrap gap-3" style="--d: 1.2s">
+              <a href={waValoracion()} class="btn btn-primario">Agendar valoración gratis <Flecha /></a>
               <a href="#tratamientos" class="btn btn-secundario">Ver tratamientos</a>
             </div>
-            <span
-              style="--d: 1.2s"
-              class="intro-subir mt-[18px] flex items-center gap-2.5 self-start rounded-full bg-white/85 py-2 pr-4 pl-2 text-[13px]"
-            >
-              <span class="size-8 rounded-full bg-[#B9A99A]"></span>
-              <span><strong>Mariyen Forero</strong> atiende cada valoración</span>
-            </span>
           </div>
 
           <!-- En escritorio la tarjeta va sobre la foto; en celular, debajo del hero -->
-          <PlanesDelMes class="intro-derecha hidden max-w-[340px] md:flex" style="--d: 1.15s" />
+          <PlanesDelMes class="intro-derecha hidden max-w-[360px] md:flex" style="--d: 1.25s" />
         </div>
       </div>
       <PlanesDelMes class="revelar mt-4 flex md:hidden" />
     </section>
 
     <!-- Tratamientos -->
-    <section id="tratamientos" class="scroll-mt-4 px-6 pt-16 md:pt-24 pb-16 md:pb-[88px]">
+    <section id="tratamientos" class="scroll-mt-4 px-6 pt-16 pb-16 md:pt-24 md:pb-[88px]">
       <div class="mx-auto flex max-w-[1180px] flex-col gap-9">
         <div class="flex flex-wrap items-end justify-between gap-5">
-          <h2 class="titulo text-[clamp(40px,4.6vw,60px)]">Hecho para <em>verte bien.</em></h2>
-          <div class="flex max-w-[340px] flex-col gap-2.5">
-            <p class="m-0 text-[15px] leading-relaxed text-gris">
-              Cada tratamiento empieza con una valoración gratis y un plan de sesiones con precio cerrado.
-            </p>
-            <a href={urlServicio(lipo.slug)} class="text-sm font-semibold no-underline">Todos los tratamientos →</a>
-          </div>
+          <h2 class="titulo text-[clamp(30px,4vw,48px)]">Tratamientos <em>más recomendados</em></h2>
+          <p class="m-0 max-w-[360px] text-[15px] leading-relaxed text-texto-3">
+            Cada tratamiento empieza con una valoración gratis y un plan con precio claro desde el inicio.
+          </p>
         </div>
-        <div class="carrusel revelar grid-cols-[repeat(auto-fit,minmax(250px,1fr))]">
+
+        <!-- Destacados: los dos servicios que la clienta quiere impulsar -->
+        <div class="grid gap-5 lg:grid-cols-2">
           {
-            servicios.map((s) => (
+            destacados.map((s) => (
+              <article class="revelar group grid overflow-hidden rounded-3xl bg-white sm:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]">
+                <a href={urlServicio(s.slug)} class="relative block overflow-hidden sm:min-h-[240px]" style={{ background: s.tono }} tabindex="-1" aria-hidden="true">
+                  <Image
+                    src={s.foto}
+                    alt=""
+                    widths={[400, 600, 800]}
+                    sizes="(min-width: 1180px) 270px, (min-width: 640px) 45vw, 100vw"
+                    transition:name={`foto-${s.slug}`}
+                    class="block aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105 sm:absolute sm:inset-0 sm:aspect-auto sm:h-full"
+                  />
+                </a>
+                <div class="flex flex-col gap-3 p-6">
+                  <h3 class="m-0 font-display text-xl font-semibold">
+                    <a href={urlServicio(s.slug)} class="text-petroleo no-underline hover:text-turquesa">
+                      {s.nombre}
+                    </a>
+                  </h3>
+                  <p class="m-0 text-[15px] leading-relaxed text-texto-2">{s.resumen}</p>
+                  <p class="m-0 flex flex-wrap items-baseline gap-x-2">
+                    <span class="precio text-2xl text-petroleo">{s.etiquetaPrecio}</span>
+                    <span class="text-sm text-texto-3">{s.detallePrecio}</span>
+                  </p>
+                  <div class="mt-auto flex flex-wrap gap-2 pt-2">
+                    <a href={waValoracion(s.enFrase)} class="btn btn-primario min-h-11 px-5 py-2.5 text-sm">
+                      Agendar valoración
+                    </a>
+                    <a href={urlServicio(s.slug)} class="btn btn-secundario min-h-11 px-5 py-2.5 text-sm">
+                      Ver detalles
+                    </a>
+                  </div>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+
+        <!-- Otros servicios principales -->
+        <div class="carrusel revelar grid-cols-2 gap-4">
+          {
+            otrosPrincipales.map((s) => (
               <a
                 href={urlServicio(s.slug)}
-                class="group relative box-border flex aspect-[4/5] flex-col justify-end overflow-hidden rounded-3xl p-3 text-tinta no-underline hover:text-tinta"
-                style={{ background: s.tono }}
+                class="group flex items-center gap-4 rounded-3xl bg-white p-3 pr-5 text-petroleo no-underline hover:text-petroleo"
               >
                 <Image
                   src={s.foto}
-                  alt={s.fotoAlt}
-                  widths={[400, 600, 800]}
-                  sizes="(min-width: 1180px) 290px, (min-width: 640px) 50vw, 100vw"
+                  alt=""
+                  width={192}
+                  height={192}
                   transition:name={`foto-${s.slug}`}
-                  class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  class="size-24 shrink-0 rounded-2xl object-cover"
                 />
-                <span class="relative flex items-end justify-between gap-2 rounded-2xl bg-white px-4 py-3.5">
-                  <span class="flex flex-col gap-0.5">
-                    <span class="text-[15px] font-bold">{s.nombreCorto}</span>
-                    <span class="text-xs text-gris-2">{s.sesiones}</span>
-                  </span>
-                  <span
-                    class:list={[
-                      'font-serif font-semibold',
-                      s.precio.startsWith('[') ? 'text-[22px]' : 'text-[26px]',
-                    ]}
-                  >
-                    {s.precio}
+                <span class="flex min-w-0 flex-col gap-1">
+                  <span class="font-display text-lg font-semibold group-hover:text-turquesa">{s.nombre}</span>
+                  <span class="text-sm text-texto-3">
+                    <span class="precio text-base text-petroleo">{s.etiquetaPrecio}</span> · {s.detallePrecio}
                   </span>
                 </span>
               </a>
             ))
           }
         </div>
-      </div>
-    </section>
 
-    <!-- Nosotros -->
-    <section id="nosotros" class="scroll-mt-4 px-6 pb-16 md:pb-24">
-      <div class="mx-auto grid max-w-[1180px] grid-cols-[repeat(auto-fit,minmax(min(340px,100%),1fr))] items-start gap-12">
-        <Image
-          src={cabinaVelas}
-          alt="Toallas enrolladas y velas encendidas en la cabina"
-          widths={[600, 900, 1200]}
-          sizes="(min-width: 1180px) 566px, 100vw"
-          class="revelar block aspect-square w-full rounded-[28px] bg-[#CDBFB2] object-cover"
-        />
-        <div class="revelar flex flex-col gap-[22px] pt-3">
-          <p class="eyebrow">Desde [año] · Zipaquirá</p>
-          <h2 class="titulo text-[clamp(40px,4.6vw,60px)]">Una cabina, <em>una especialista.</em></h2>
-          <p class="m-0 text-[17px] leading-[1.7] text-gris">
-            En Mariyen te atiende siempre la misma persona: desde la valoración hasta la última sesión. Sin prisas y
-            con medidas reales para ver tu avance. [Ajustar con la historia de Mariyen]
-          </p>
-          <a href="#sede" class="text-[15px] font-semibold no-underline">Conoce la sede →</a>
-          <div class="grid grid-cols-3 gap-4 border-t border-linea-2 pt-[22px]">
-            <div class="flex flex-col gap-1">
-              <span class="text-[13px] text-gris-2">Años de experiencia</span>
-              <span class="font-serif text-[40px]">[N]</span>
-            </div>
-            <div class="flex flex-col gap-1">
-              <span class="text-[13px] text-gris-2">Tratamientos</span>
-              <span class="font-serif text-[40px]">{servicios.length}</span>
-            </div>
-            <div class="flex flex-col gap-1">
-              <span class="text-[13px] text-gris-2">Valoración</span>
-              <span class="font-serif text-[40px]">$0</span>
-            </div>
+        <!-- Complementarios -->
+        <div class="revelar rounded-3xl bg-white p-6 md:p-8">
+          <div class="mb-4 flex flex-wrap items-baseline justify-between gap-3">
+            <h3 class="m-0 font-display text-xl font-semibold">Otros tratamientos</h3>
+            <a href={URL_OTROS} class="text-sm font-semibold">Ver todos →</a>
           </div>
-          <Image
-            src={toalla}
-            alt="Toalla turquesa y velas, detalle de la cabina"
-            widths={[600, 900, 1200]}
-            sizes="(min-width: 1180px) 566px, 100vw"
-            class="block h-[220px] w-full rounded-3xl bg-arena-2 object-cover"
-          />
+          <ul class="m-0 grid list-none gap-x-10 p-0 md:grid-cols-2">
+            {
+              complementarios.map((c) => (
+                <li class="flex items-baseline justify-between gap-4 border-b border-niebla py-3">
+                  <span>
+                    <span class="font-semibold">{c.nombre}</span>
+                    {c.detalle && <span class="block text-sm text-texto-3">{c.detalle}</span>}
+                  </span>
+                  <span class="precio text-right text-petroleo">
+                    {c.desde && <span class="font-sans text-sm font-medium text-texto-3">desde </span>}
+                    {precio(c.valor)}
+                  </span>
+                </li>
+              ))
+            }
+          </ul>
         </div>
       </div>
     </section>
 
-    <!-- Así empiezas -->
+    <!-- Por qué Mariyen -->
     <section class="bg-white px-6 py-16 md:py-24">
       <div class="mx-auto flex max-w-[1180px] flex-col gap-10">
-        <h2 class="titulo text-[clamp(40px,4.6vw,60px)]">Así <em>empiezas.</em></h2>
+        <h2 class="titulo text-[clamp(30px,4vw,48px)]">Por qué <em>Mariyen</em></h2>
+        <ul class="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4 p-0">
+          {
+            razones.map((r) => (
+              <li class="revelar flex flex-col gap-3 rounded-3xl bg-bruma p-6">
+                <span class="flex size-10 items-center justify-center rounded-full bg-agua text-petroleo">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </span>
+                <h3 class="m-0 font-display text-lg font-semibold">{r.t}</h3>
+                <p class="m-0 text-[15px] leading-relaxed text-texto-2">{r.d}</p>
+              </li>
+            ))
+          }
+        </ul>
+        <FormasDePago />
+      </div>
+    </section>
+
+    <!-- Así empiezas -->
+    <section class="px-6 py-16 md:py-24">
+      <div class="mx-auto flex max-w-[1180px] flex-col gap-10">
+        <h2 class="titulo text-[clamp(30px,4vw,48px)]">Así <em>empiezas</em></h2>
         <ol class="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-5 p-0">
           {
             pasos.map((p) => (
-              <li class="revelar flex flex-col gap-2.5 border-t border-linea pt-[22px]">
-                <span class="font-serif text-[34px] text-petroleo italic">{p.n}</span>
+              <li class="revelar flex flex-col gap-2.5 border-t-2 border-agua pt-[22px]">
+                <span class="font-display text-3xl font-semibold text-turquesa">{p.n}</span>
                 <h3 class="m-0 text-lg font-bold">{p.t}</h3>
-                <p class="m-0 text-[15px] leading-relaxed text-gris">{p.d}</p>
+                <p class="m-0 text-[15px] leading-relaxed text-texto-2">{p.d}</p>
               </li>
             ))
           }
@@ -225,76 +248,85 @@ const sede = [
       </div>
     </section>
 
-    <!-- Resultados -->
-    <section id="resultados" class="scroll-mt-4 px-6 py-16 md:py-24">
-      <div class="mx-auto flex max-w-[1180px] flex-col gap-9">
-        <div class="flex flex-wrap items-end justify-between gap-5">
-          <h2 class="titulo text-[clamp(40px,4.6vw,60px)]">Pacientes <em>reales.</em></h2>
-          <p class="m-0 max-w-[340px] text-sm leading-relaxed text-gris-2">
-            Publicadas con autorización. Los resultados varían según cada persona.
+    <!-- Preguntas frecuentes -->
+    <Preguntas id="preguntas" items={FAQ_GENERAL} class="bg-white" />
+
+    <!--
+      TODO(cliente): resultados reales (antes y después) y testimonios, con autorización firmada.
+      Las secciones se muestran solo cuando RESULTADOS o TESTIMONIOS de src/data/site.ts tengan datos.
+    -->
+    {
+      (RESULTADOS.length > 0 || TESTIMONIOS.length > 0) && (
+        <section id="resultados" class="scroll-mt-4 px-6 py-16 md:py-24">
+          <div class="mx-auto flex max-w-[1180px] flex-col gap-8">
+            <h2 class="titulo text-[clamp(30px,4vw,48px)]">
+              Pacientes <em>reales</em>
+            </h2>
+            <p class="m-0 text-sm text-texto-3">Publicado con autorización. Los resultados varían según cada persona.</p>
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Sobre Mariyen (resumen) -->
+    <section class="px-6 py-16 md:py-24">
+      <div class="mx-auto grid max-w-[1180px] grid-cols-[repeat(auto-fit,minmax(min(340px,100%),1fr))] items-center gap-12">
+        <Image
+          src={cabinaVelas}
+          alt="Cabina del centro de estética con toallas enrolladas y velas encendidas"
+          widths={[600, 900, 1200]}
+          sizes="(min-width: 1180px) 566px, 100vw"
+          class="revelar block aspect-[4/3] w-full rounded-[28px] bg-niebla object-cover"
+        />
+        <div class="revelar flex flex-col gap-5">
+          <p class="eyebrow">{NEGOCIO.experiencia}</p>
+          <h2 class="titulo text-[clamp(30px,4vw,48px)]">Honesta, profesional y <em>exigente con los resultados</em></h2>
+          <p class="m-0 text-[17px] leading-[1.7] text-texto-2">
+            Así nos describen nuestras clientas. Formación en Nogal, CIFES y laboratorios como Natasha Karnaskaya,
+            Armeso y Pineda, con habilitación sanitaria al día.
           </p>
-        </div>
-        <div class="carrusel revelar grid-cols-[repeat(auto-fit,minmax(300px,1fr))]">
-          {
-            resultados.map((r) => (
-              <figure class="m-0 flex flex-col gap-3 rounded-3xl bg-white p-3">
-                <div class="grid aspect-[4/3] grid-cols-2 gap-1.5">
-                  <span class="flex items-end rounded-[16px_6px_6px_16px] bg-[#E6DED4] p-2.5 text-xs font-semibold">
-                    Antes
-                  </span>
-                  <span class:list={['flex items-end rounded-[6px_16px_16px_6px] p-2.5 text-xs font-semibold', r.tono]}>
-                    Después
-                  </span>
-                </div>
-                <figcaption class="flex justify-between px-1.5 pb-1.5 text-sm">
-                  <strong>{r.zona}</strong>
-                  <span class="text-gris-2">{r.detalle}</span>
-                </figcaption>
-              </figure>
-            ))
-          }
+          <a href="/sobre-mariyen" class="font-semibold">Conoce a Mariyen →</a>
         </div>
       </div>
     </section>
 
-    <!-- Sede -->
-    <section id="sede" class="scroll-mt-4 bg-white px-6 py-16 md:py-24">
+    <!-- Visítanos -->
+    <section class="bg-white px-6 py-16 md:py-24">
       <div class="mx-auto grid max-w-[1180px] grid-cols-[repeat(auto-fit,minmax(min(320px,100%),1fr))] items-center gap-8">
-        <div class="flex flex-col gap-[22px]">
-          <h2 class="titulo text-[clamp(40px,4.6vw,60px)]">Te esperamos <em>en Zipaquirá.</em></h2>
-          <div class="flex flex-col gap-2.5">
-            {
-              sede.map((d) => (
-                <div class="flex flex-wrap justify-between gap-3 rounded-[18px] bg-crema px-[22px] py-[18px]">
-                  <span class="font-serif text-[22px] font-semibold">{d.t}</span>
-                  <span class="text-[15px] text-gris">{d.v}</span>
-                </div>
-              ))
-            }
-            <div class="flex flex-wrap justify-between gap-3 rounded-[18px] bg-crema px-[22px] py-[18px]">
-              <span class="font-serif text-[22px] font-semibold">WhatsApp</span>
-              <a href={WHATSAPP_URL} class="text-[15px] underline">{WHATSAPP_TEXTO}</a>
+        <div class="flex flex-col gap-6">
+          <h2 class="titulo text-[clamp(30px,4vw,48px)]">Te esperamos <em>en Ubaté</em></h2>
+          <dl class="m-0 flex flex-col gap-2.5">
+            <div class="flex flex-col gap-1 rounded-[18px] bg-bruma px-[22px] py-4 sm:flex-row sm:justify-between sm:gap-4">
+              <dt class="font-display font-semibold">Dirección</dt>
+              <dd class="m-0 text-[15px] text-texto-2 sm:text-right">{NEGOCIO.direccion.completa}</dd>
             </div>
+            <div class="flex flex-col gap-1 rounded-[18px] bg-bruma px-[22px] py-4 sm:flex-row sm:justify-between sm:gap-4">
+              <dt class="font-display font-semibold">Horario</dt>
+              <dd class="m-0 text-[15px] text-texto-2 sm:text-right">{NEGOCIO.horario.texto}</dd>
+            </div>
+            <div class="flex flex-col gap-1 rounded-[18px] bg-bruma px-[22px] py-4 sm:flex-row sm:justify-between sm:gap-4">
+              <dt class="font-display font-semibold">WhatsApp</dt>
+              <dd class="m-0 text-[15px]"><a href={waValoracion()}>{NEGOCIO.telefono.visible}</a></dd>
+            </div>
+          </dl>
+          <div class="flex flex-wrap gap-3">
+            <a href={MAPA.comoLlegar} class="btn btn-primario">Cómo llegar <Flecha /></a>
+            <a href="/contacto" class="btn btn-secundario">Ver mapa y contacto</a>
           </div>
         </div>
-        <div
-          class="relative box-border flex min-h-[380px] items-end overflow-hidden rounded-[28px] bg-salvia p-[22px]"
-        >
+        <div class="relative min-h-[320px] overflow-hidden rounded-[28px] bg-niebla md:min-h-[380px]">
           <Image
             src={masaje}
-            alt="Masaje en la cabina de Mariyen"
+            alt="Masaje en la espalda en una camilla con luz cálida"
             widths={[600, 900, 1200]}
             sizes="(min-width: 1180px) 574px, 100vw"
             class="parallax-suave absolute inset-0 h-full w-full object-cover"
           />
-          <span class="relative rounded-full bg-white/90 px-3.5 py-2 text-[13px] text-tinta-3">
-            [Reemplazar por foto de la fachada y mapa]
-          </span>
         </div>
       </div>
     </section>
 
-    <CtaWhatsapp>Tu primera valoración <em>es gratis.</em></CtaWhatsapp>
+    <CtaWhatsapp>Tu primera valoración <em>es gratis</em></CtaWhatsapp>
   </main>
   <Footer />
 </Base>

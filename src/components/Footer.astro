@@ -1,10 +1,51 @@
 ---
-import { INSTAGRAM_URL, INSTAGRAM_USUARIO } from '../data/sitio';
+import Logo from './Logo.astro';
+import { NEGOCIO, waValoracion } from '../data/site';
+import { servicios, URL_OTROS, urlServicio } from '../data/servicios';
 ---
 
-<footer class="px-6 pt-7 pb-10">
-  <div class="mx-auto flex max-w-[1180px] flex-wrap justify-between gap-3 text-[13px] text-gris-2">
-    <span>© Mariyen Centro de Estética · Zipaquirá</span>
-    <a href={INSTAGRAM_URL} class="text-gris-2 hover:text-petroleo">{INSTAGRAM_USUARIO}</a>
+<!-- pb-28 en celular: deja espacio para el botón flotante de WhatsApp -->
+<footer class="bg-petroleo px-6 pt-14 pb-28 text-white md:pb-10">
+  <div class="mx-auto grid max-w-[1180px] gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr]">
+    <div class="flex flex-col gap-4">
+      <a href="/" class="flex items-center gap-2.5 text-white no-underline hover:text-agua">
+        <Logo />
+        <span class="font-display text-xl font-semibold">{NEGOCIO.nombre}</span>
+      </a>
+      <address class="flex flex-col gap-1 text-[15px] leading-relaxed text-white/85 not-italic">
+        <span>{NEGOCIO.direccion.calle}, {NEGOCIO.direccion.detalle.toLowerCase()}</span>
+        <span>{NEGOCIO.ciudad}, {NEGOCIO.departamento}</span>
+        <span>{NEGOCIO.horario.texto}</span>
+        <a href={waValoracion()} class="mt-1 text-agua underline hover:text-white">
+          WhatsApp {NEGOCIO.telefono.visible}
+        </a>
+      </address>
+      <p class="m-0 text-sm text-white/75">{NEGOCIO.experiencia} · {NEGOCIO.habilitacion}</p>
+    </div>
+
+    <nav aria-label="Tratamientos" class="flex flex-col gap-2 text-[15px]">
+      <h2 class="m-0 mb-1 font-display text-base font-semibold text-white">Tratamientos</h2>
+      {
+        servicios.map((s) => (
+          <a href={urlServicio(s.slug)} class="text-white/85 no-underline hover:text-agua">
+            {s.nombre}
+          </a>
+        ))
+      }
+      <a href={URL_OTROS} class="text-white/85 no-underline hover:text-agua">Otros tratamientos</a>
+    </nav>
+
+    <nav aria-label="Mariyen" class="flex flex-col gap-2 text-[15px]">
+      <h2 class="m-0 mb-1 font-display text-base font-semibold text-white">Mariyen</h2>
+      <a href="/sobre-mariyen" class="text-white/85 no-underline hover:text-agua">Sobre Mariyen</a>
+      <a href="/#preguntas" class="text-white/85 no-underline hover:text-agua">Preguntas frecuentes</a>
+      <a href="/contacto" class="text-white/85 no-underline hover:text-agua">Contacto y cómo llegar</a>
+      <a href={NEGOCIO.instagram.url} class="text-white/85 no-underline hover:text-agua">
+        Instagram {NEGOCIO.instagram.usuario}
+      </a>
+    </nav>
   </div>
+  <p class="mx-auto mt-12 mb-0 max-w-[1180px] border-t border-white/15 pt-6 text-[13px] text-white/70">
+    © {new Date().getFullYear()} {NEGOCIO.nombre} · {NEGOCIO.ciudad}, {NEGOCIO.departamento}
+  </p>
 </footer>

@@ -1,0 +1,32 @@
+---
+import { servicios, urlServicio, URL_OTROS } from '../data/servicios';
+
+interface Props {
+  /** slug del servicio activo, o "otros" para la página de complementarios. */
+  actual: string;
+}
+const { actual } = Astro.props;
+const pestanas = [
+  ...servicios.map((s) => ({ href: urlServicio(s.slug), label: s.nombre, activo: s.slug === actual })),
+  { href: URL_OTROS, label: 'Otros tratamientos', activo: actual === 'otros' },
+];
+---
+
+<nav aria-label="Cambiar de tratamiento" class="fila-deslizable">
+  {
+    pestanas.map((t) => (
+      <a
+        href={t.href}
+        aria-current={t.activo ? 'page' : undefined}
+        class:list={[
+          'inline-flex min-h-11 items-center rounded-full border px-[18px] py-2.5 text-sm font-semibold no-underline transition-colors',
+          t.activo
+            ? 'border-turquesa bg-turquesa text-white hover:text-white'
+            : 'border-linea bg-white text-petroleo hover:border-turquesa hover:text-turquesa',
+        ]}
+      >
+        {t.label}
+      </a>
+    ))
+  }
+</nav>

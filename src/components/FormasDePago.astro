@@ -1,0 +1,19 @@
+---
+import { NEGOCIO } from '../data/site';
+
+interface Props {
+  class?: string;
+}
+const { class: clase = '' } = Astro.props;
+---
+
+<div class:list={['flex flex-col gap-3 rounded-3xl bg-petroleo p-6 text-white md:flex-row md:items-center md:justify-between md:p-8', clase]}>
+  <p class="m-0 font-display text-lg font-semibold">Formas de pago</p>
+  <ul class="m-0 flex list-none flex-wrap gap-2 p-0">
+    {
+      NEGOCIO.pagos.map((p) => (
+        <li class="rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white ring-1 ring-agua/40">{p}</li>
+      ))
+    }
+  </ul>
+</div>

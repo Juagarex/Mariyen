@@ -1,18 +1,65 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import { getImage } from 'astro:assets';
 import '../styles/global.css';
+import BotonWhatsapp from '../components/BotonWhatsapp.astro';
+import { NEGOCIO, SITE_URL } from '../data/site';
+import imagenSocial from '../assets/images/hero-retrato.jpg';
 
 interface Props {
   title: string;
   description: string;
+  /** Datos estructurados adicionales de la página (Service, FAQPage, …). */
+  jsonLd?: Record<string, unknown>[];
+  /** Mensaje prellenado del botón flotante de WhatsApp. */
+  mensajeWhatsapp?: string;
 }
 
-const { title, description } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+const { title, description, jsonLd = [], mensajeWhatsapp } = Astro.props;
+const canonical = new URL(Astro.url.pathname, SITE_URL).href;
+
+// Imagen para redes (1200×630) generada a partir de la foto del hero
+const og = await getImage({ src: imagenSocial, width: 1200, height: 630, fit: 'cover', format: 'jpg' });
+const ogUrl = new URL(og.src, SITE_URL).href;
+
+const negocio = {
+  '@context': 'https://schema.org',
+  '@type': 'BeautySalon',
+  '@id': `${SITE_URL}/#negocio`,
+  name: NEGOCIO.nombre,
+  url: SITE_URL,
+  image: ogUrl,
+  telephone: NEGOCIO.telefono.e164,
+  priceRange: '$60.000 - $1.875.000',
+  currenciesAccepted: 'COP',
+  paymentAccepted: NEGOCIO.pagos.join(', '),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: NEGOCIO.direccion.linea,
+    addressLocality: NEGOCIO.ciudad,
+    addressRegion: NEGOCIO.departamento,
+    addressCountry: NEGOCIO.pais,
+  },
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: NEGOCIO.horario.dias,
+      opens: NEGOCIO.horario.abre,
+      closes: NEGOCIO.horario.cierra,
+    },
+  ],
+  areaServed: [
+    { '@type': 'City', name: 'Ubaté' },
+    { '@type': 'AdministrativeArea', name: 'Provincia de Ubaté, Cundinamarca' },
+  ],
+  sameAs: [NEGOCIO.instagram.url],
+};
+
+const datos = [negocio, ...jsonLd];
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es-CO">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -20,24 +67,37 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" content="#1F4A4C" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="theme-color" content="#0F3E42" />
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_CO" />
-    <meta property="og:site_name" content="Mariyen Centro de Estética" />
+    <meta property="og:site_name" content={NEGOCIO.nombre} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${NEGOCIO.nombre} en ${NEGOCIO.ciudad}`} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogUrl} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@600;700&display=swap"
       rel="stylesheet"
     />
+
+    {datos.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
     <ClientRouter />
   </head>
   <body>
     <slot />
+    <BotonWhatsapp mensaje={mensajeWhatsapp} />
   </body>
 </html>

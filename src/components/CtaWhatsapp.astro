@@ -1,25 +1,30 @@
 ---
-import { WHATSAPP_URL } from '../data/sitio';
+import { waValoracion } from '../data/site';
 
 interface Props {
   texto?: string;
+  /** Servicio para el mensaje prellenado de WhatsApp. */
+  servicio?: string;
 }
-const { texto = 'Escríbenos y te respondemos con los horarios disponibles.' } = Astro.props;
+const {
+  texto = 'Escríbenos por WhatsApp y te respondemos con los horarios disponibles.',
+  servicio,
+} = Astro.props;
 ---
 
 <section class="px-6 py-16 md:py-24">
   <div
-    class="revelar mx-auto flex max-w-[1180px] flex-col items-center gap-[18px] rounded-[32px] bg-petroleo px-6 py-12 md:px-8 md:py-[72px] text-center text-white"
+    class="revelar mx-auto flex max-w-[1180px] flex-col items-center gap-[18px] rounded-[32px] bg-petroleo px-6 py-12 text-center text-white md:px-8 md:py-[72px]"
   >
-    <h2 class="titulo text-[clamp(40px,4.6vw,62px)] [&_em]:text-white">
+    <h2 class="titulo text-[clamp(30px,4vw,52px)] text-white [&_em]:text-agua">
       <slot />
     </h2>
-    <p class="m-0 max-w-[520px] text-[17px] leading-relaxed text-petroleo-claro">{texto}</p>
+    <p class="m-0 max-w-[520px] text-[17px] leading-relaxed text-white/85">{texto}</p>
     <a
-      href={WHATSAPP_URL}
-      class="inline-flex min-h-[50px] items-center rounded-full bg-white px-[30px] py-[15px] text-base font-bold text-petroleo no-underline hover:bg-crema"
+      href={waValoracion(servicio)}
+      class="inline-flex min-h-12 items-center rounded-full bg-agua px-7 py-3 text-base font-bold text-petroleo no-underline hover:bg-white hover:text-petroleo"
     >
-      Escribir por WhatsApp
+      Agendar valoración gratis
     </a>
   </div>
 </section>

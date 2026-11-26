@@ -1,31 +1,35 @@
 # Mariyen Centro de Estética — sitio web
 
-Sitio estático en **Astro** + **Tailwind CSS v4**, desplegado en **Vercel**.
+Sitio estático en **Astro** + **Tailwind CSS v4**, desplegado en **Vercel**. Centro de estética en Ubaté, Cundinamarca.
 
 ## Desarrollo
 
 ```bash
 npm install
 npm run dev      # http://localhost:4321
-npm run build    # genera .vercel/output (adaptador de Vercel)
-npm run preview
+npm run check    # revisión de tipos y plantillas (astro check)
+npm run build    # genera .vercel/output (adaptador de Vercel) + sitemap
 ```
 
-## Estructura
+## Dónde se edita cada cosa
 
-- `src/pages/index.astro` — inicio
-- `src/pages/tratamientos/[slug].astro` — plantilla de cada servicio (una página por tratamiento)
-- `src/data/servicios.ts` — textos, precios y fotos de cada tratamiento (edita aquí)
-- `src/data/sitio.ts` — WhatsApp e Instagram
-- `src/styles/global.css` — paleta y tipografías (tema de Tailwind)
-- `src/assets/images/` — fotos (Astro las optimiza a WebP en el build)
+- `src/data/site.ts` — **datos del negocio**: dirección, horario, WhatsApp, pagos, mensaje central, FAQ, datos de la profesional, testimonios y resultados.
+- `src/data/servicios.ts` — servicios principales (una página cada uno) y complementarios, con precios.
+- `src/styles/global.css` — identidad visual (Propuesta 1): colores y tipografías Sora + Manrope.
+- `src/layouts/Base.astro` — SEO de todas las páginas: title, description, Open Graph, Twitter y JSON-LD `BeautySalon`.
 
-## Pendiente por confirmar
+## Páginas
 
-Los textos entre `[corchetes]` faltan por confirmar con Mariyen (precios, duración, horario, dirección, FAQ).
-Las fotos son de referencia (Unsplash); reemplazar por fotos reales de la cabina. Los antes/después
-están vacíos a propósito: solo pacientes reales con autorización.
+- `/` inicio · `/tratamientos/[slug]` servicios principales · `/tratamientos/otros-tratamientos`
+- `/sobre-mariyen` · `/contacto` (mapa y "Cómo llegar")
+- Las URL antiguas (`lipo-sin-cirugia`, `gluteos`, `hidrolipoclasia`) redirigen con 301 (ver `astro.config.mjs`).
 
-## Despliegue
+## Pendientes de la clienta
 
-Vercel detecta Astro automáticamente (`vercel.json`). Cada push a `main` despliega a producción.
+Busca `TODO(cliente)` en el código.
+
+## Reglas del contenido
+
+- Sin promesas de resultados ("garantizado", "100 %", "resultados asegurados").
+- Cada servicio lleva la nota: "Los resultados varían según cada persona…".
+- Sin fotos de antes y después ni testimonios inventados: solo reales y con autorización.
