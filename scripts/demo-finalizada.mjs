@@ -18,15 +18,19 @@ copyFileSync(join(raiz, 'demo-finalizada', 'index.html'), join(estaticos, 'index
 const config = {
   version: 3,
   routes: [
-    // Cualquier ruta (incluida "/") muestra la página de demo finalizada.
+    // Encabezados para todas las respuestas: sin caché larga y sin indexar.
     {
       src: '/(.*)',
-      dest: '/index.html',
       headers: {
         'Cache-Control': 'public, max-age=0, must-revalidate',
         'X-Robots-Tag': 'noindex, nofollow',
       },
+      continue: true,
     },
+    // Primero se sirven los archivos que existen (solo index.html)…
+    { handle: 'filesystem' },
+    // …y cualquier otra ruta muestra también la página de demo finalizada.
+    { src: '/(.*)', dest: '/index.html' },
   ],
 };
 writeFileSync(join(salida, 'config.json'), JSON.stringify(config, null, 2));
