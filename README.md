@@ -33,3 +33,10 @@ Busca `TODO(cliente)` en el código.
 - Sin promesas de resultados ("garantizado", "100 %", "resultados asegurados").
 - Cada servicio lleva la nota: "Los resultados varían según cada persona…".
 - Sin fotos de antes y después ni testimonios inventados: solo reales y con autorización.
+
+## Demo finalizada (estado actual de producción)
+
+Producción muestra `demo-finalizada/index.html` en **todas** las URL. Lo hace `scripts/demo-finalizada.mjs`, que
+`vercel.json` ejecuta como build (`"buildCommand": "npm run build:demo-finalizada"`). El código del sitio no se tocó.
+
+Para volver a publicar el sitio completo, cambia en `vercel.json` la línea por `"buildCommand": "npm run build"` y haz push.

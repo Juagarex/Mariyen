@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
-    "lint": "astro check"
+    "lint": "astro check",
+    "build:demo-finalizada": "node scripts/demo-finalizada.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.6",
