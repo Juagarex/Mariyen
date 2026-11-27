@@ -3,8 +3,6 @@
   "framework": "astro",
   "buildCommand": "npm run build:demo-finalizada",
   "installCommand": "npm install",
-  "cleanUrls": true,
-  "trailingSlash": false,
   "headers": [
     {
       "source": "/_astro/(.*)",
